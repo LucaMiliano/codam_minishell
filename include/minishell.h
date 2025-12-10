@@ -16,30 +16,40 @@ Type definitions:
 9 = APPEND
 10 = HEREDOC
 */
-typedef struct s_lexer
+// typedef struct s_lexer
+// {
+// 	int	word;
+// 	int option;
+// 	int num;
+// 	int squote;
+// 	int dsquote;
+// 	int pipt;
+// 	int redir_in;
+// 	int redir_out;
+// 	int append;
+// 	int heredoc;
+// } t_lexer;
+
+enum e_toktype
 {
-	int	word;
-	int option;
-	int num;
-	int squote;
-	int dsquote;
-	int pipt;
-	int redir_in;
-	int redir_out;
-	int append;
-	int heredoc;
-} t_lexer;
+	TOK_WORD,
+	TOK_PIPE,
+	TOK_REDIR_IN, // <
+	TOK_REDIR_OUT, // >
+	TOK_APPEND, // >>
+	TOK_HEREDOC, // <<
+};
 
 typedef struct s_tokens
 {
-	char			*str;
-	int				type;
+	char			*value;
+	enum e_toktype	type;
 	struct s_tokens	*next;
 }	t_tokens;
 
 // functions
 //////////////////
-//    promt     //
+//    prompt    //
 //////////////////
 void	prompt(void);
 void	setup_signals(void);
@@ -48,6 +58,9 @@ int		ft_streq(const char *s1, const char *s2);
 char	*get_current_directory(void);
 char	*get_username(void);
 char	*get_hostname(void);
+int		is_space(char c);
+int		is_operator(char c);
+int		 operator_len(char *s);
 
 #endif
 
