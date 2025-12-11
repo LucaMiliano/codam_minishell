@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 13:52:29 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/10 14:31:19 by lpieck           ###   ########.fr       */
+/*   Updated: 2025/12/11 00:03:41 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int	is_space(char c)
 {
-	(unsigned)c;
-	if (c > 6 && c < 12 || c == 32)
+	// (unsigned)c; unused variable
+	if ((c > 6 && c < 12) || c == 32) // () around the expression to resolve error (-Wall -Werror Wextra)
 		return (1);
 	return (0);
 }
 
 int	is_operator(char c)
 {
-	(unsigned)c;
+	// (unsigned)c; unused variable
 	if (c == '<' || c == '>' || c == '|')
 		return (1);
 	return (0);
@@ -35,17 +35,35 @@ int operator_len(char *s)
 	return 1;
 }
 
-int	operator_type(char *op)
+// int	operator_type(char *op)
+// {
+// 	if (!ft_strcmp(op, "|"))
+// 		return (TOK_PIPE);
+// 	if (!ft_strcmp(op, "<"))
+// 		return (TOK_REDIR_IN);
+// 	if (!ft_strcmp(op, ">"))
+// 		return (TOK_REDIR_OUT);
+// 	if (!ft_strcmp(op, "<<"))
+// 		return (TOK_HEREDOC);
+// 	if (!ft_strcmp(op, ">>"))
+// 		return (TOK_APPEND);
+// 	return (TOK_WORD);
+// } Replaced with ft_strncmp want die checkt n aantal zelfs zonder '\0'
+
+int operator_type(char *op)
 {
-	if (!ft_strcmp(op, "|"))
-		return (TOK_PIPE);
-	if (!ft_strcmp(op, "<"))
-		return (TOK_REDIR_IN);
-	if (!ft_strcmp(op, ">"))
-		return (TOK_REDIR_OUT);
-	if (!ft_strcmp(op, "<<"))
-		return (TOK_HEREDOC);
-	if (!ft_strcmp(op, ">>"))
-		return (TOK_APPEND);
-	return (TOK_WORD);
+	if (ft_strncmp(op, "|", 2) == 0)
+		return TOK_PIPE;
+	if (ft_strncmp(op, "<", 2) == 0)
+		return TOK_REDIR_IN;
+	if (ft_strncmp(op, ">", 2) == 0)
+		return TOK_REDIR_OUT;
+	if (ft_strncmp(op, "<<", 3) == 0)
+		return TOK_HEREDOC;
+	if (ft_strncmp(op, ">>", 3) == 0)
+		return TOK_APPEND;
+	return TOK_WORD;
 }
+
+
+
