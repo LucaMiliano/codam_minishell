@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   free_functions1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 22:43:37 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/20 22:15:51 by cpinas           ###   ########.fr       */
+/*   Created: 2025/12/21 01:40:20 by cpinas            #+#    #+#             */
+/*   Updated: 2025/12/28 18:11:18 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s)
+void	free_tokens(t_tokens *lst)
 {
-	char	*ptr;
-	size_t	i;
+	t_tokens *tmp;
 
-	i = (ft_strlen(s));
-	i = i + 1;
-	ptr = malloc(i);
-	if (!ptr)
-		return (NULL);
-	ft_memcpy(ptr, s, i);
-	return (ptr);
+	while (lst)
+	{
+		tmp = lst->next;
+		free(lst->value);
+		free(lst);
+		lst = tmp;
+	}
+}
+
+void free_split(char **arr)
+{
+	int i = 0;
+
+	if (!arr)
+		return;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }

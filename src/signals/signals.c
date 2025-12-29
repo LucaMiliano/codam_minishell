@@ -1,0 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt_signals.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 20:49:56 by cpinas            #+#    #+#             */
+/*   Updated: 2025/12/20 21:01:53 by cpinas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+#include <readline/readline.h>
+#include <signal.h>
+#include <unistd.h>
+
+void	sigint_handler(int sig)
+{
+	(void)sig;
+
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	setup_signals(void)
+{
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+// /*
+// ** ======================
+// ** CHILD PROCESS (EXEC)
+// ** ======================
+// ** Ctrl-C  → kill process
+// ** Ctrl-\  → quit process
+// */
+
+// void setup_signals_child(void)
+// {
+// 	signal(SIGINT, SIG_DFL);
+// 	signal(SIGQUIT, SIG_DFL);
+// }
+
+// /*
+// ** ======================
+// ** HEREDOC MODE
+// ** ======================
+// ** Ctrl-C  → abort heredoc
+// */
+
+// static void sigint_heredoc(int signo)
+// {
+// 	(void)signo;
+// 	write(1, "\n", 1);
+// 	exit(1);
+// }
+
+// void setup_signals_heredoc(void)
+// {
+// 	signal(SIGINT, sigint_heredoc);
+// 	signal(SIGQUIT, SIG_IGN);
+// }

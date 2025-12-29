@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:19:09 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/11 00:58:32 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/29 17:01:28 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,30 @@ void	handle_operator(char *str, int *i, t_tokens **list)
 	if (!operator)
 		return ;
 	type = operator_type(operator);
-	add_token(list, operator, type, 0, 1); // arguments toegevoegd
+	add_token(list, operator, type, 0, 0); // arguments toegevoegd
 	*i += len;
 }
 
 void	handle_word(char *str, int *i, t_tokens **list)
 {
 	char *word;
+	int quoted;
+	int expand;
 
-	word = extract_word(str, i);
+	word = extract_word(str, i, &quoted, &expand);
 	if  (!word)
 		return ;
-	add_token(list, word, TOK_WORD, 0, 1); // zelfde als in handle_operator
+	add_token(list, word, TOK_WORD, quoted, expand); // zelfde als in handle_operator
 }
 
-char	*extract_word(char *str, int *i)
+char	*extract_word(char *str, int *i, int *quoted, int *expand)
 {
 	int		start = *i;
 	int		j = *i;
 	char	quote;
-	int		quoted = 0;
-	int		expand = 1;
 
+	*quoted = 0;
+	*expand = 1;
 	start = *i;
 	j = *i;
 	while (str[j] && !is_space(str[j]) && !is_operator(str[j]))
@@ -96,13 +98,12 @@ char	*extract_word(char *str, int *i)
 		{
 			quote = str[j];
 			if (quote == '"')
-				quoted = 2;
+				*quoted = 2;
 			else if (quote == '\'')
 			{
-				quoted = 1;
-				expand = 0; // enkele quote geen expansion
+				*quoted = 1;
+				*expand = 0; // enkele quote geen expansion
 			}
-
 			j++; // skip opening quote
 			while (str[j] && str[j] != quote)
 				j++;
@@ -119,13 +120,10 @@ char	*extract_word(char *str, int *i)
 			j++;
 	}
 	*i = j;
-	// haal onveranderde tekst eruit
-	char *raw = ft_substr(str, start, j - start);
+	char *raw = ft_substr(str, start, j - start); // haal onveranderde tekst eruit
 	if (!raw)
 		return (NULL);
-
-	// verwijder quotes -> new function
-	char *clean = remove_quotes(raw);
+	char *clean = remove_quotes(raw); // verwijder quotes -> new function
 	free(raw);
 	return (clean);
 }
@@ -153,4 +151,6 @@ t_tokens	*add_token(t_tokens **tokens, char *val, int type, int quoted, int expa
 		tmp->next = new;
 	}
 	return (new);
-} // een return toegevoegd zodat de data rechtstreeks kan worden aangepast;
+}
+
+

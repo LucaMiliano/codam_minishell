@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:36:55 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/10 20:52:10 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/21 01:40:45 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,46 @@ void	print_tokens(t_tokens *lst)
 	}
 	printf("--------------\n\n");
 }
-void print_tokens2(t_tokens *tokens)
+// void print_tokens2(t_tokens *tokens)
+// {
+// 	int i = 0;
+// 	while (tokens)
+// 	{
+// 		printf("[%d] type=%d, value='%s'\n", i, tokens->type, tokens->value);
+// 		tokens = tokens->next;
+// 		i++;
+// 	}
+// }
+
+void	print_tokens_debug(t_tokens *tokens)
 {
 	int i = 0;
+
+	printf("\n--- TOKENS DEBUG ---\n");
 	while (tokens)
 	{
-		printf("[%d] type=%d, value='%s'\n", i, tokens->type, tokens->value);
+		printf("[%d] %-10s | value=\"%s\" | quoted=%d | expandable=%d\n",
+			i,
+			token_name(tokens->type),
+			tokens->value,
+			tokens->quoted,
+			tokens->expandable
+		);
 		tokens = tokens->next;
 		i++;
 	}
+	printf("--------------------\n\n");
 }
 
+// void	free_tokens(t_tokens *lst)
+// {
+// 	t_tokens *tmp;
 
-void	free_tokens(t_tokens *lst)
-{
-	t_tokens *tmp;
-
-	while (lst)
-	{
-		tmp = lst->next;
-		free(lst->value);
-		free(lst);
-		lst = tmp;
-	}
-}
+// 	while (lst)
+// 	{
+// 		tmp = lst->next;
+// 		free(lst->value);
+// 		free(lst);
+// 		lst = tmp;
+// 	}
+// }

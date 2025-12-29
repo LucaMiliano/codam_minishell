@@ -6,13 +6,14 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 20:49:43 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/10 22:23:41 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/28 18:02:50 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 // Directory (path)
 char	*get_current_directory(void)
@@ -45,26 +46,32 @@ char	*get_current_directory(void)
 }
 
 // Username
-char	*get_username(void)
+char	*get_username()
 {
-	char	*env;
+	char *val;
 
-	env = getenv("USER");
-	if (env)
-		return (ft_strdup(env));
-	return (ft_strdup("user"));
+	val = find_in_env("USER");
+	if (val != NULL)
+		return ft_strdup(val);
+	return ft_strdup("user");
 }
 
 // Hostname
-char	*get_hostname(void)
+char *get_hostname(void)
 {
-	char	buf[256];
+	int fd = open("/etc/hostname", O_RDONLY);
+	if (fd < 0)
+		return ft_strdup("host");
 
-	if (getenv("HOSTNAME"))
-		return (ft_strdup(getenv("HOSTNAME")));
-	if (gethostname(buf, sizeof(buf)) != 0)
-		return (ft_strdup("host"));
-	return (ft_strdup(buf));
+	char buf[256];
+	int n = read(fd, buf, 255);
+	close(fd);
+	if (n <= 0)
+		return ft_strdup("host");
+	buf[n] = '\0';
+	if (buf[n - 1] == '\n')
+		buf[n - 1] = '\0';
+	return ft_strdup(buf);
 }
 
 // Build_promt
@@ -94,3 +101,6 @@ void	free_prompt(t_prompt *p)
 	if (p->host) free(p->host);
 	if (p->prompt_str) free(p->prompt_str);
 }
+
+
+

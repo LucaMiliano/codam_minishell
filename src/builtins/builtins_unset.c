@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   builtins_unset.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/09 15:29:50 by lpieck           ###   ########.fr       */
+/*   Created: 2025/12/29 16:35:52 by cpinas            #+#    #+#             */
+/*   Updated: 2025/12/29 16:36:26 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	- tokens defined in tokenization.c should be parsed into command pipeline here
-	- Validate syntax here (e.g., pipe at ends, consecutive pipes, missing filename)
-*/
+#include "minishell.h"
+
+int builtin_unset(char **argv)
+{
+	int i;
+
+	if (!argv)
+		return (0);
+
+	i = 1; // skip "unset" itself
+	while (argv[i])
+	{
+		remove_env_var(argv[i]);
+		i++;
+	}
+	return (0); // success
+}

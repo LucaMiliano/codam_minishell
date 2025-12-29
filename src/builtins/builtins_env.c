@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt_signals.c                                   :+:      :+:    :+:   */
+/*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/10 20:49:56 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/10 20:49:59 by cpinas           ###   ########.fr       */
+/*   Created: 2025/12/28 15:24:04 by cpinas            #+#    #+#             */
+/*   Updated: 2025/12/28 19:53:01 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-#include <signal.h>
 #include <unistd.h>
 
-void	sigint_handler(int sig)
+int	builtin_env(void)
 {
-	(void)sig;
+	int i;
+	char **env;
 
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
+	env = g_shell.env;
+	i = 0;
+	if (!env)
+		return (0);
 
-void	setup_signals(void)
-{
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	while (env[i])
+	{
+		write(STDOUT_FILENO, env[i], ft_strlen(env[i]));
+		write(STDOUT_FILENO, "\n", 1);
+		i++;
+	}
+	return (0);
 }

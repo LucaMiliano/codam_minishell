@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin_char.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 22:43:37 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/20 22:15:51 by cpinas           ###   ########.fr       */
+/*   Created: 2025/12/29 17:27:22 by cpinas            #+#    #+#             */
+/*   Updated: 2025/12/29 17:27:45 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strjoin_char(char *s, char c)
 {
-	char	*ptr;
+	char	*new;
+	size_t	len;
 	size_t	i;
 
-	i = (ft_strlen(s));
-	i = i + 1;
-	ptr = malloc(i);
-	if (!ptr)
+	if (!s)
 		return (NULL);
-	ft_memcpy(ptr, s, i);
-	return (ptr);
+
+	len = ft_strlen(s);
+	new = malloc(len + 2);
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		new[i] = s[i];
+		i++;
+	}
+	new[i++] = c;
+	new[i] = '\0';
+	return (new);
 }

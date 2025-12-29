@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 03:57:43 by cpinas            #+#    #+#             */
-/*   Updated: 2025/11/28 10:21:01 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/29 17:32:59 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
-char	*ft_strdup(char *s);
+char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -55,6 +55,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		ft_atoi_base(const char *str, int base);
 void	ft_free_split(char **arr);
+char	*ft_strjoin_char(char *s, char c);
 
 // #lib printf
 // int		ft_printf(const char *format, ...);
