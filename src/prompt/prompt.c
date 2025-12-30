@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/30 10:46:38 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 19:08:08 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static int	handle_input(char *line)
 	if (*line)
 		add_history(line);
 
-	builtin_history(line);
-	return (1); // continue loop
+	if (builtin_history(line))
+		return(2); // skip lexer/execution
+	return(1);
 }
 
 // int execute_builtins(char *line)
@@ -38,10 +39,10 @@ static int	handle_input(char *line)
 
 int builtin_history(char *line)
 {
-	if (!ft_strncmp(line, "history -c", 11))
+	if (!ft_strncmp(line, "history -c", 10))
 	{
 		clear_history();
-		write(1, "history cleared\n", 10);
+		write(1, "history cleared\n", 17);
 		return (1);
 	}
 	return (0);
@@ -227,14 +228,22 @@ char *prompt()
 		if (!line) // Ctrl-D / EOF
 		{
 			free_prompt(&p);
-			break;
+			break ;
 		}
 
-		if (!handle_input(line)) // optional: empty or invalid input
+		int ret = handle_input(line);
+		// if (!handle_input(line)) // optional: empty or invalid input
+		if (ret == 0)
 		{
 			free_prompt(&p);
 			free(line);
-			break;
+			break ;
+		}
+		if (ret == 2)
+		{
+			free_prompt(&p);
+			free(line);
+			continue ;
 		}
 
 		// Tokenize input
