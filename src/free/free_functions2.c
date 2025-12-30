@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 22:32:31 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/21 22:35:39 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 10:38:15 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	free_cmd_pipeline(t_cmd *cmd)
 	{
 		t_cmd *next_cmd = cmd->next;
 		// Free argv
+		if (cmd->argv_expandable)
+			free(cmd->argv_expandable);
+
 		if (cmd->argv)
 		{
 			for (int i = 0; cmd->argv[i]; i++)

@@ -6,12 +6,14 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/27 17:58:42 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 17:47:06 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 /*
 ** HEREDOC EXPANSION RULES:
@@ -22,6 +24,44 @@
 ** - Expansion happens per line
 ** - Expansion result is written to heredoc pipe
 */
+
+
+
+static char *expand_variables(const char *line)
+{
+	char *res = ft_strdup(""); // start with empty string
+	const char *p = line;
+
+	while (*p)
+	{
+		if (*p == '$' && ft_isalpha(*(p + 1)))
+		{
+			p++;
+			int start = p - line;
+			while (ft_isalnum(*p) || *p == '_')
+				p++;
+			char *var = ft_substr(line, start, p - line);
+			char *val = find_in_env(var);
+			free(var);
+
+			char *tmp = res;
+			if (val != NULL)
+				res = ft_strjoin(res, val);
+			else
+				res = ft_strdup(res); // keep res as is if variable not found
+			free(tmp);
+		}
+		else
+		{
+			char tmp[2] = {*p, 0};
+			char *old = res;
+			res = ft_strjoin(res, tmp);
+			free(old);
+			p++;
+		}
+	}
+	return (res);
+}
 static int handle_heredoc(t_redir *redir)
 {
 	int pipefd[2];
@@ -39,6 +79,12 @@ static int handle_heredoc(t_redir *redir)
 		// FUTURE: heredoc expansion hook
 		if (redir->expandable)
 		{
+			if (redir->expandable)
+			{
+				char *expanded = expand_variables(line); // envp = your environment list
+   				 free(line);
+   				 line = expanded;
+			}
 			// line = expand_variables(line, env); // placeholder
 		}
 
@@ -55,14 +101,40 @@ static int handle_heredoc(t_redir *redir)
 
 	close(pipefd[1]);
 	redir->fd = pipefd[0]; // child will read from this
-	return 0;
+	return (0);
 }
 
 
-int prepare_heredocs(t_cmd *cmds)
+// int prepare_heredocs(t_cmd *cmds)
+// {
+// 	t_cmd *cmd;
+// 	t_redir *redir;
+
+// 	cmd = cmds;
+// 	while (cmd)
+// 	{
+// 		redir = cmd->redirs;
+// 		while (redir)
+// 		{
+// 			if (redir->type == R_HEREDOC)
+// 			{
+// 				if (handle_heredoc(redir) != 0)
+// 					return -1;
+// 			}
+// 			redir = redir->next;
+// 		}
+// 		cmd = cmd->next;
+// 	}
+// 	return (0);
+// }
+
+
+int	prepare_heredocs(t_cmd *cmds)
 {
-	t_cmd *cmd;
-	t_redir *redir;
+	t_cmd	*cmd;
+	t_redir	*redir;
+	pid_t	pid;
+	int		status;
 
 	cmd = cmds;
 	while (cmd)
@@ -72,14 +144,40 @@ int prepare_heredocs(t_cmd *cmds)
 		{
 			if (redir->type == R_HEREDOC)
 			{
-				if (handle_heredoc(redir) != 0)
-					return -1;
+				pid = fork();
+				if (pid == 0)
+				{
+					/* CHILD: heredoc reader */
+					setup_signals_heredoc();
+					if (handle_heredoc(redir) != 0)
+						exit(1);
+					exit(0);
+				}
+				else
+				{
+					/* PARENT */
+					waitpid(pid, &status, 0);
+					setup_signals(); // restore shell signals
+
+					if (WIFEXITED(status))
+					{
+						if (WEXITSTATUS(status) == 130)
+						{
+							g_shell.last_status = 130;
+							return (1);
+						}
+					}
+
+					if (WIFSIGNALED(status))
+					{
+						g_shell.last_status = 128 + WTERMSIG(status);
+						return (1);
+					}
+				}
 			}
 			redir = redir->next;
 		}
 		cmd = cmd->next;
 	}
-	return 0;
+	return (0);
 }
-
-

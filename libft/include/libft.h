@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 03:57:43 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/29 17:32:59 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 11:56:08 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_putnbr_fd(int n, int fd);
 int		ft_atoi_base(const char *str, int base);
 void	ft_free_split(char **arr);
 char	*ft_strjoin_char(char *s, char c);
+long	ft_atol(const char *str);
 
 // #lib printf
 // int		ft_printf(const char *format, ...);

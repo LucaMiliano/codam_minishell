@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/22 00:39:00 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 10:18:46 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,25 @@ t_cmd *parse(t_tokens *tokens)
 				head = current;
 		}
 
+		// if (tokens->type == TOK_WORD)
+		// {
+		// 	current->argv = argv_add(current->argv, tokens->value);
+		// 	if (!current->argv)
+		// 	{
+		// 		free_cmd_pipeline(head);
+		// 		return (NULL);
+		// 	}
+		// }
 		if (tokens->type == TOK_WORD)
 		{
-			current->argv = argv_add(current->argv, tokens->value);
-			if (!current->argv)
+			int expandable = (tokens->quoted != 1);
+			if (!argv_add(current, tokens->value, expandable))
 			{
 				free_cmd_pipeline(head);
 				return (NULL);
 			}
 		}
+		//replaces the above in green to make sure expandable is rightfully added.
 		else if (tokens->type == TOK_PIPE)
 		{
 			t_cmd *next_cmd = cmd_new();

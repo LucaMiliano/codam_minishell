@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt_signals.c                                   :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 20:49:56 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/20 21:01:53 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 17:43:15 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	setup_signals(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+}
+void setup_signals_child(void)
+{
+	signal(SIGINT, SIG_DFL);  // default behavior for child
+	signal(SIGQUIT, SIG_DFL); // default behavior for child
 }
 // /*
 // ** ======================
@@ -63,3 +68,26 @@ void	setup_signals(void)
 // 	signal(SIGINT, sigint_heredoc);
 // 	signal(SIGQUIT, SIG_IGN);
 // }
+
+static void	sigint_heredoc(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	exit(130);
+}
+
+void	setup_signals_heredoc(void)
+{
+	signal(SIGINT, sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sigint_handler_heredoc(int sig) //new
+{
+	(void)sig;
+	g_shell.last_status = 130;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}

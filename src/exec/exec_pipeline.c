@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/29 15:53:08 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 12:19:28 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 
 static void child_process(t_cmd *cmd, int in_fd, int out_fd)
 {
+	setup_signals_child();
 	/* stdin from previous pipe */
 	if (in_fd != STDIN_FILENO)
 	{
@@ -205,6 +206,15 @@ void execute_pipeline(t_cmd *cmds)
 		prev_fd = pipefd[0];
 		cmd = cmd->next;
 	}
-	while (wait(NULL) > 0)
-		;
+	// while (wait(NULL) > 0)
+	// 	;
+
+		int status;
+	while (wait(&status) > 0)
+	{
+    	if (WIFEXITED(status))
+        	g_shell.last_status = WEXITSTATUS(status);
+    	else if (WIFSIGNALED(status))
+        	g_shell.last_status = 128 + WTERMSIG(status);
+	}
 }

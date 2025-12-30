@@ -102,6 +102,7 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char			**argv;
+	int				*argv_expandable; // nieuwe parallel aan **argv
 	t_redir			*redirs;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -115,10 +116,6 @@ typedef struct s_cmd
 char		*prompt(void);
 // int			execute_builtins(char *line);
 int			builtin_history(char *line);
-// signals
-void		setup_signals(void);
-void		sigint_handler(int sig);
-
 // prompt utils
 char		*get_current_directory(void);
 char		*get_username(void);
@@ -128,6 +125,15 @@ void		free_prompt(t_prompt *p);
 // prompt colors
 void		color_prompt(t_prompt *p);
 char		*ft_strjoin_multiple(const char *first, ...);
+  /////////////////
+ //   signals   //
+/////////////////
+// signals.c
+void		setup_signals(void);
+void		sigint_handler(int sig);
+void		setup_signals_child(void);
+void		sigint_handler_heredoc(int sig);
+void		setup_signals_heredoc(void);
 //////////////////
 //     lexer    //
 //////////////////
@@ -167,7 +173,8 @@ t_cmd *parse(t_tokens *tokens);
 // int	parse_heredoc(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
 // t_tokens	*skip_heredoc_body(t_tokens *delim);
 // parser_add_word.c
-char **argv_add(char **argv, char *new_arg);
+// char **argv_add(char **argv, char *new_arg);
+int	argv_add(t_cmd *cmd, char *word, int expandable);
 // parser_cmd.c
 t_cmd *cmd_new(void);
 // parser_redir.c

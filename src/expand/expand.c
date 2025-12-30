@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:13:15 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/29 17:26:27 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 10:48:31 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,23 @@ static char *get_var_value(const char *s, int *consumed)
 		*consumed = 1;
 		return (ft_itoa(g_shell.last_status));
 	}
-
 	len = 0;
 	while (s[len] && (ft_isalnum(s[len]) || s[len] == '_'))
 		len++;
-
 	if (len == 0)
 	{
 		*consumed = 0;
 		return (ft_strdup("$"));
 	}
-
 	name = ft_substr(s, 0, len);
 	if (!name)
 		return (NULL);
 
 	value = find_in_env(name);
 	free(name);
-
 	*consumed = len;
 	if (!value)
 		return (ft_strdup(""));
-
 	return (ft_strdup(value));
 }
 
@@ -104,6 +99,44 @@ char *expand_word(char *word)
 /*
 ** Expand argv and redirections for entire pipeline
 */
+// void	expand_pipeline(t_cmd *cmds)
+// {
+// 	int		i;
+// 	char	*expanded;
+// 	t_redir	*r;
+
+// 	while (cmds)
+// 	{
+// 		i = 0;
+// 		while (cmds->argv && cmds->argv[i])
+// 		{
+// 			expanded = expand_word(cmds->argv[i]);
+// 			if (expanded)
+// 			{
+// 				free(cmds->argv[i]);
+// 				cmds->argv[i] = expanded;
+// 			}
+// 			i++;
+// 		}
+
+// 		r = cmds->redirs;
+// 		while (r)
+// 		{
+// 			if (r->expandable)
+// 			{
+// 				expanded = expand_word(r->target);
+// 				if (expanded)
+// 				{
+// 					free(r->target);
+// 					r->target = expanded;
+// 				}
+// 			}
+// 			r = r->next;
+// 		}
+// 		cmds = cmds->next;
+// 	}
+// }
+
 void	expand_pipeline(t_cmd *cmds)
 {
 	int		i;
@@ -115,11 +148,14 @@ void	expand_pipeline(t_cmd *cmds)
 		i = 0;
 		while (cmds->argv && cmds->argv[i])
 		{
-			expanded = expand_word(cmds->argv[i]);
-			if (expanded)
+			if (cmds->argv_expandable[i])
 			{
-				free(cmds->argv[i]);
-				cmds->argv[i] = expanded;
+				expanded = expand_word(cmds->argv[i]);
+				if (expanded)
+				{
+					free(cmds->argv[i]);
+					cmds->argv[i] = expanded;
+				}
 			}
 			i++;
 		}
@@ -141,3 +177,4 @@ void	expand_pipeline(t_cmd *cmds)
 		cmds = cmds->next;
 	}
 }
+

@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 02:48:36 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/21 19:15:18 by cpinas           ###   ########.fr       */
+/*   Updated: 2025/12/30 10:14:01 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_cmd	*cmd_new(void)
 	if (!cmd)
 		return (NULL);
 	cmd->argv = NULL;
+	cmd->argv_expandable = NULL; //new added to keep metadata
 	cmd->redirs = NULL;
 	cmd->next = NULL;
 	return (cmd);
