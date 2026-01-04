@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:45:24 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/29 14:49:37 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/04 18:47:53 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ static void	export_one(char *arg)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
-		return;
+		return ;
 	}
-
 	eq = ft_strchr(arg, '=');
 	if (!eq)
 	{
 		if (!find_in_env(arg))
 			add_env_var(arg, NULL);
-		return;
+		return ;
 	}
-
 	key = ft_substr(arg, 0, eq - arg);
 	if (find_in_env(key))
 		update_env(key, eq + 1);
@@ -69,7 +67,6 @@ static void	print_export(void)
 		i++;
 	}
 }
-
 
 int	builtin_export(char **argv)
 {

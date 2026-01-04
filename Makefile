@@ -27,6 +27,7 @@ SRCS		:=	main.c \
 				prompt/prompt_colors.c \
 				prompt/prompt_utils.c \
 				signals/signals.c \
+				signals/signals_heredoc.c \
 				lexer/tokenization_more_utils.c \
 				lexer/tokenization.c \
 				lexer/tokenization_utils.c \
@@ -44,6 +45,7 @@ SRCS		:=	main.c \
 				env/env_variable.c \
 				redirections/redirections.c \
 				builtins/builtins_echo.c \
+				builtins/builtins_cd_utils.c \
 				builtins/builtins_pwd.c \
 				builtins/builtins_env.c \
 				builtins/builtins_cd.c \

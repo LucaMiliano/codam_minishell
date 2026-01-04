@@ -6,19 +6,13 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:31:10 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/29 16:34:03 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/04 20:01:59 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-	- here we put functions to handle $ if it is inside "" or unquoted
-	- if '' (single quoted) this does nothing
-	- handle $? which should expand to the exit status of the most recently executed command
-*/
 
-
-void update_env(char *key, char *value)
+void	update_env(char *key, char *value)
 {
 	int		i;
 	size_t	key_len;
@@ -27,25 +21,22 @@ void update_env(char *key, char *value)
 	if (!key || !value || !g_shell.env)
 		return ;
 	key_len = ft_strlen(key);
-
 	new_var = malloc(key_len + 1 + ft_strlen(value) + 1);
 	if (!new_var)
 		return ;
 	ft_strlcpy(new_var, key, key_len + 1);
 	ft_strlcat(new_var, "=", key_len + 2);
 	ft_strlcat(new_var, value, key_len + 2 + ft_strlen(value));
-
-	i = 0;
-	while (g_shell.env[i])
+	i = -1;
+	while (g_shell.env[i++])
 	{
 		if (ft_strncmp(g_shell.env[i], key, key_len) == 0
 			&& g_shell.env[i][key_len] == '=')
 		{
-			free(g_shell.env[i]);	// ✅ NOW LEGAL
+			free(g_shell.env[i]);
 			g_shell.env[i] = new_var;
-			return;
+			return ;
 		}
-		i++;
 	}
 	free(new_var);
 }
@@ -57,25 +48,25 @@ char	*find_in_env(const char *name)
 	char	**env;
 
 	if (!name)
-		return NULL;
-
+		return (NULL);
 	env = g_shell.env;
 	if (!env)
-		return NULL;
-
+		return (NULL);
 	len = ft_strlen(name);
-	for (i = 0; env[i]; i++)
+	i = 0;
+	while (env[i])
 	{
 		if (ft_strncmp(env[i], name, len) == 0
 			&& env[i][len] == '=')
 		{
-			return env[i] + len + 1;
+			return (env[i] + len + 1);
 		}
+		i++;
 	}
 	return (NULL);
 }
 
-char *join_path(char *dir, char *cmd)
+char	*join_path(char *dir, char *cmd)
 {
 	size_t	len;
 	char	*res;
@@ -83,8 +74,7 @@ char *join_path(char *dir, char *cmd)
 	len = ft_strlen(dir) + ft_strlen(cmd) + 2;
 	res = malloc(len);
 	if (!res)
-		return NULL;
-
+		return (NULL);
 	ft_strlcpy(res, dir, len);
 	ft_strlcat(res, "/", len);
 	ft_strlcat(res, cmd, len);
@@ -121,12 +111,12 @@ void	add_env_var(char *key, char *value)
 
 void	remove_env_var(char *key)
 {
-	int i, j;
-	int key_len;
+	int	i;
+	int	j;
+	int	key_len;
 
 	if (!key || !g_shell.env)
-		return;
-
+		return ;
 	key_len = ft_strlen(key);
 	i = 0;
 	while (g_shell.env[i])
@@ -142,7 +132,7 @@ void	remove_env_var(char *key)
 				j++;
 			}
 			g_shell.env[j] = NULL;
-			return;
+			return ;
 		}
 		i++;
 	}

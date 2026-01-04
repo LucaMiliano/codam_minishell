@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_env.c                                     :+:      :+:    :+:   */
+/*   signals_heredoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/28 15:24:04 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/04 18:53:09 by cpinas           ###   ########.fr       */
+/*   Created: 2026/01/04 21:48:51 by cpinas            #+#    #+#             */
+/*   Updated: 2026/01/04 21:49:34 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <signal.h>
 #include <unistd.h>
 
-int	builtin_env(void)
+static void	sigint_heredoc(int sig)
 {
-	int		i;
-	char	**env;
+	(void)sig;
+	write(1, "\n", 1);
+	exit(130);
+}
 
-	env = g_shell.env;
-	i = 0;
-	if (!env)
-		return (0);
-	while (env[i])
-	{
-		write(STDOUT_FILENO, env[i], ft_strlen(env[i]));
-		write(STDOUT_FILENO, "\n", 1);
-		i++;
-	}
-	return (0);
+void	setup_signals_heredoc(void)
+{
+	signal(SIGINT, sigint_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	sigint_handler_heredoc(int sig)
+{
+	(void)sig;
+	g_shell.last_status = 130;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
