@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_more_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 00:03:28 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/11 01:03:47 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/05 10:21:17 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,25 @@ int	handle_operator_exclusion(char *str, int *i)
 {
 	if (str[*i] == '|' && str[*i + 1] == '|') // '||' deze verwijderen als we bonus gaan doen
 	{
-		write(2, "minishell: syntax error near unexpected token '||'\n", 54);
+		write(2, "minishell: syntax error near unexpected token '||'\n", 51);
 		*i += 2;
 		return (1);
 	}
 	if (str[*i] == '<' && str[*i + 1] == '<' && str [*i + 2] == '<') // '<<<'
 	{
-		write (2, "minishell: syntax error near unexpected token '<<<'\n", 54);
+		write (2, "minishell: syntax error near unexpected token '<<<'\n", 51);
 		*i += 3;
 		return (1);
 	}
 	if (str[*i] == '>' && str[*i + 1] == '<') // ><
 	{
-		write(2, "minishell: syntax error near unexpected token `><`\n", 53);
+		write(2, "minishell: syntax error near unexpected token `><`\n", 51);
 		*i += 2;
 		return (1);
 	}
 	if (str[*i] == '<' && str[*i + 1] == '>') // <>
 	{
-		write(2, "minishell: syntax error near unexpected token `<>`\n", 53);
+		write(2, "minishell: syntax error near unexpected token `<>`\n", 51);
 		*i += 2;
 		return (1);
 	}

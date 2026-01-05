@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/30 19:08:08 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/05 14:10:06 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	handle_input(char *line)
 {
 	if (!line)
 	{
-		write(1, "exit\n", 5);
+		// write(1, "exit\n", 5);
 		return (0); // break stop de loop
 	}
 	if (*line)
@@ -259,7 +259,7 @@ char *prompt()
 
 		if (!cmds)
 		{
-			write(2, "Parser returned NULL\n", 21);
+			// write(2, "Parser returned NULL\n", 21);
 			free_prompt(&p);
 			free(line);
 			continue; // safely skip to next iteration

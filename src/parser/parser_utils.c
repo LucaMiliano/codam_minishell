@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:32:00 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/21 03:49:52 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/05 10:22:08 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_pipe_syntax(t_tokens *tokens) //double pipe command syntax error
 	// PIPE at start
 	if (tokens->type == TOK_PIPE)
 	{
-		write(2, "minishell: syntax error near unexpected token '|'\n", 52);
+		write(2, "minishell: syntax error near unexpected token '|'\n", 50);
 		return (0);
 	}
 	t_tokens *prev = tokens;
@@ -33,7 +33,7 @@ int	check_pipe_syntax(t_tokens *tokens) //double pipe command syntax error
 		{
 			if (!tokens->next || tokens->next->type == TOK_PIPE)
 			{
-				write(2, "minishell: syntaxterror near unexpected token '|'\n", 52);
+				write(2, "minishell: syntaxterror near unexpected token '|'\n", 50);
 				return (0);
 			}
 		}
@@ -43,7 +43,7 @@ int	check_pipe_syntax(t_tokens *tokens) //double pipe command syntax error
 	// pipe at end
 	if (prev->type == TOK_PIPE)
 	{
-		write(2, "minishell: syntax error near unexpected token '|'\n", 52);
+		write(2, "minishell: syntax error near unexpected token '|'\n", 50);
 		return (0);
 	}
 	return (1);

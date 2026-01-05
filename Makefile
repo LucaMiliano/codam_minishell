@@ -16,7 +16,7 @@ LIBFT_INC	:= $(LIBFT_DIR)/include
 
 # ---- COMPILER ----
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g3 -I$(INC_DIR) -I$(LIBFT_INC)
+CFLAGS		:= -Wall -Wextra -Werror -g3 -I$(INC_DIR) -I$(LIBFT_INC) -fPIE
 
 # ---- LIBRARIES ----
 LDFLAGS		:= -lreadline -L$(LIBFT_DIR) -lft
