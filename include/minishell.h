@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/04 21:50:09 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/06 16:52:34 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ t_tokens	*tokenize(char *prompt);
 void		handle_operator(char *str, int *i, t_tokens **list);
 void		handle_word(char *str, int *i, t_tokens **list);
 char		*extract_word(char *str, int *i, int *quoted, int *expand);
-t_tokens	*add_token(t_tokens **tokens, char *val, int type, int quoted, int expandable);
+char		*check_for_quotes(char *str, int *quoted, int *i, int *expand);
 // tokenization_utils.c
 int			is_space(char c);
 int			is_operator(char c);
@@ -133,6 +133,8 @@ int			operator_type(char *op);
 // tokenization_more_utils.c
 char		*remove_quotes(char *s);
 int			handle_operator_exclusion(char *str, int *i);
+t_tokens	*new_token(char *val, int type, int quoted, int exp);
+void		token_add_back(t_tokens **tokens, t_tokens *new);
 // debug_tokens.c
 void		print_tokens(t_tokens *lst);
 void		free_tokens(t_tokens *lst);

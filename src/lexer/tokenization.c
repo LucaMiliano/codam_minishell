@@ -3,38 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:19:09 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/29 17:01:28 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/06 16:52:29 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-TODO:
-- create tokens: WORD, OPTION, NUM, SQUOTE, DQUOTE, PIPE, REDIR_IN, REDIR_OUT, APPEND, HEREDOC.
-- return error on unclosed quotes
-- Make tokens by creating a linked list > for every token found, store that piece of string and assign a value to it (defining the type)
-
-Type definitions:
-1 = WORD
-2 = OPTION
-3 = NUM
-4 = SQUOTE
-5 = DQUOTE
-6 = PIPE
-7 = REDIR_IN
-8 = REDIR_OUT
-9 = APPEND
-10 = HEREDOC
-*/
 
 #include "minishell.h"
 
 t_tokens	*tokenize(char *prompt)
 {
 	int			i;
-	// int			skip; // -> unused variable?
 	t_tokens	*tokens;
 
 	i = 0;
@@ -60,97 +40,51 @@ void	handle_operator(char *str, int *i, t_tokens **list)
 	int		type;
 
 	if (handle_operator_exclusion(str, i))
-		return ; // toegevoegd voor echt foute input (makkelijker voor parsen)
+		return ;
 	len = operator_len(str + *i);
 	operator = ft_substr(str, *i, len);
 	if (!operator)
 		return ;
 	type = operator_type(operator);
-	add_token(list, operator, type, 0, 0); // arguments toegevoegd
+	token_add_back(list, new_token(operator, type, 0, 0));
 	*i += len;
 }
 
 void	handle_word(char *str, int *i, t_tokens **list)
 {
-	char *word;
-	int quoted;
-	int expand;
+	char	*word;
+	int		quoted;
+	int		expand;
 
+	quoted = 0;
+	expand = 1;
 	word = extract_word(str, i, &quoted, &expand);
-	if  (!word)
+	if (!word)
 		return ;
-	add_token(list, word, TOK_WORD, quoted, expand); // zelfde als in handle_operator
+	token_add_back(list, new_token(word, TOK_WORD, quoted, expand));
 }
 
 char	*extract_word(char *str, int *i, int *quoted, int *expand)
 {
-	int		start = *i;
-	int		j = *i;
-	char	quote;
+	int		start;
+	char	*raw;
+	char	*clean;
 
-	*quoted = 0;
-	*expand = 1;
 	start = *i;
-	j = *i;
-	while (str[j] && !is_space(str[j]) && !is_operator(str[j]))
+	while (str[*i] && !is_space(str[*i]) && !is_operator(str[*i]))
 	{
-		if (str[j] == '"' || str[j] == '\'')
+		if (str[*i] == '"' || str[*i] == '\'')
 		{
-			quote = str[j];
-			if (quote == '"')
-				*quoted = 2;
-			else if (quote == '\'')
-			{
-				*quoted = 1;
-				*expand = 0; // enkele quote geen expansion
-			}
-			j++; // skip opening quote
-			while (str[j] && str[j] != quote)
-				j++;
-
-			if (!str[j])
-			{
-				write(2, "minishell: syntax error: unclosed quote\n", 40);
-				*i = j;
+			if (!check_for_quotes(str, quoted, i, expand))
 				return (NULL);
-			}
-			j++; // skip closing quote
 		}
 		else
-			j++;
+			(*i)++;
 	}
-	*i = j;
-	char *raw = ft_substr(str, start, j - start); // haal onveranderde tekst eruit
+	raw = ft_substr(str, start, *i - start);
 	if (!raw)
 		return (NULL);
-	char *clean = remove_quotes(raw); // verwijder quotes -> new function
+	clean = remove_quotes(raw);
 	free(raw);
 	return (clean);
 }
-
-t_tokens	*add_token(t_tokens **tokens, char *val, int type, int quoted, int expandable) // voor het struct en toekomstige parsing
-{
-	t_tokens *new;
-	t_tokens *tmp;
-
-	new = malloc(sizeof(t_tokens));
-	if (!new)
-		return (NULL);
-	new->value = val;
-	new->type = type;
-	new->quoted = quoted;
-	new->expandable = expandable;
-	new->next = NULL;
-	if (!*tokens)
-		*tokens = new;
-	else
-	{
-		tmp = *tokens;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-	return (new);
-}
-
-

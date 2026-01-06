@@ -3,46 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_add_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/30 10:15:01 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/06 16:54:11 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <string.h>
-
-// char	**argv_add(char **argv, char *new_arg)
-// {
-// 	int i;
-// 	int j;
-// 	char **new_argv;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (argv && argv[i])
-// 		i++;
-// 	new_argv = malloc(sizeof(char *) *(i + 2));
-// 	if(!new_argv)
-// 		return (NULL);
-
-// 	while (j < i)
-// 	{
-// 		new_argv[j] = argv[j];
-// 		j++;
-// 	}
-// 	new_argv[i] = ft_strdup(new_arg);
-// 	   if (!new_argv[i])
-// 	{
-// 		free(new_argv);
-// 		return NULL;
-// 	}
-// 	new_argv[i + 1] = NULL;
-// 	free(argv); // free old argv array (but not the string)
-// 	return (new_argv);
-// }
 
 int	argv_add(t_cmd *cmd, char *word, int expandable)
 {
