@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/30 10:18:46 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/06 17:13:51 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,14 +136,17 @@
 ////			refactor ideas not complete above ^					/////
 /////////////////////////////////////////////////////////////////////////
 
-t_cmd *parse(t_tokens *tokens)
+t_cmd	*parse(t_tokens *tokens)
 {
+	t_cmd	*head;
+	t_cmd	*current;
+	int		expandable;
+	t_cmd	*next_cmd;
+
+	head = NULL;
+	current = NULL;
 	if (!check_pipe_syntax(tokens))
 		return (NULL);
-
-	t_cmd *head = NULL;
-	t_cmd *current = NULL;
-
 	while (tokens)
 	{
 		if (!current)
@@ -154,29 +157,18 @@ t_cmd *parse(t_tokens *tokens)
 			if (!head)
 				head = current;
 		}
-
-		// if (tokens->type == TOK_WORD)
-		// {
-		// 	current->argv = argv_add(current->argv, tokens->value);
-		// 	if (!current->argv)
-		// 	{
-		// 		free_cmd_pipeline(head);
-		// 		return (NULL);
-		// 	}
-		// }
 		if (tokens->type == TOK_WORD)
 		{
-			int expandable = (tokens->quoted != 1);
+			expandable = (tokens->quoted != 1);
 			if (!argv_add(current, tokens->value, expandable))
 			{
 				free_cmd_pipeline(head);
 				return (NULL);
 			}
 		}
-		//replaces the above in green to make sure expandable is rightfully added.
 		else if (tokens->type == TOK_PIPE)
 		{
-			t_cmd *next_cmd = cmd_new();
+			next_cmd = cmd_new();
 			if (!next_cmd)
 			{
 				free_cmd_pipeline(head);
@@ -185,7 +177,8 @@ t_cmd *parse(t_tokens *tokens)
 			current->next = next_cmd;
 			current = next_cmd;
 		}
-		else if (tokens->type == TOK_REDIR_IN || tokens->type == TOK_REDIR_OUT || tokens->type == TOK_APPEND)
+		else if (tokens->type == TOK_REDIR_IN || tokens->type == TOK_REDIR_OUT
+			|| tokens->type == TOK_APPEND)
 		{
 			t_tokens *file_token = tokens->next;
 			if (!file_token || file_token->type != TOK_WORD)

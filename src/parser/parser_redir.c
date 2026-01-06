@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 02:51:45 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/27 18:07:06 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/06 17:09:12 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@
 
 void	cmd_add_redir(t_cmd *cmd, t_redir *redir)
 {
+	t_redir	*tmp;
+
 	if (!cmd->redirs)
 		cmd->redirs = redir;
-		else
-		{
-			t_redir *tmp = cmd->redirs;
-			while (tmp->next)
-				tmp = tmp->next;
-			tmp->next = redir;
-		}
+	else
+	{
+		tmp = cmd->redirs;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = redir;
+	}
 }
 
 // t_redir	*redir_new(t_redir_type type, char *target, int expandable)
