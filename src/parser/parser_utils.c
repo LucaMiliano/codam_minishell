@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:32:00 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/06 17:11:45 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/07 12:52:48 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	check_pipe_syntax(t_tokens *tokens)
 		{
 			if (!tokens->next || tokens->next->type == TOK_PIPE)
 			{
-				// write(2, "minishell: syntaxterror near unexpected token '|'\n", 50);
-				perror("minishell: syntaxterror near unexpected token '|'\n"); //checken of dit hetzelfde werkt als bovenstaand.
+				write(2, "minishell: syntax error near unexpected token '|'\n", 50);
 				return (0);
 			}
 		}

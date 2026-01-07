@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/06 16:52:34 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/07 12:29:23 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void		print_tokens_debug(t_tokens *tokens);
 //////////////////
 // parsing.c
 t_cmd		*parse(t_tokens *tokens);
-int			argv_add(t_cmd *cmd, char *word, int expandable);
+t_cmd		*argv_add(t_cmd *cmd, char *word, int expandable);
 // parser_cmd.c
 t_cmd		*cmd_new(void);
 // parser_redir.c

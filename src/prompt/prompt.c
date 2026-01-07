@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/05 14:10:06 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/07 12:52:48 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,38 +212,59 @@ char *prompt()
 	t_tokens	*tokens;
 	t_prompt	p;
 	t_cmd		*cmds;
+	int			is_tty;
 
-	if (!isatty(STDIN_FILENO))
-		return NULL;
+	is_tty = isatty(STDIN_FILENO);
 
 	while (1)
 	{
-		// Build prompt
-		p.cwd = get_current_directory();
-		p.user = get_username();  // old function that needs envp
-		p.host = get_hostname();
-		color_prompt(&p);             // builds p.prompt_str
-
-		line = readline(p.prompt_str);
-		if (!line) // Ctrl-D / EOF
+		// Build prompt only if TTY
+		if (is_tty)
 		{
-			free_prompt(&p);
-			break ;
+			p.cwd = get_current_directory();
+			p.user = get_username();
+			p.host = get_hostname();
+			color_prompt(&p);
+			line = readline(p.prompt_str);
+		}
+		else
+		{
+			// For non-TTY input, use plain reading
+			char buf[4096];
+			if (fgets(buf, sizeof(buf), stdin) == NULL)
+			{
+				if (is_tty)
+					free_prompt(&p);
+				break;
+			}
+			// Remove trailing newline
+			size_t len = ft_strlen(buf);
+			if (len > 0 && buf[len - 1] == '\n')
+				buf[len - 1] = '\0';
+			line = ft_strdup(buf);
+		}
+
+		if (!line)
+		{
+			if (is_tty)
+				free_prompt(&p);
+			break;
 		}
 
 		int ret = handle_input(line);
-		// if (!handle_input(line)) // optional: empty or invalid input
 		if (ret == 0)
 		{
-			free_prompt(&p);
+			if (is_tty)
+				free_prompt(&p);
 			free(line);
-			break ;
+			break;
 		}
 		if (ret == 2)
 		{
-			free_prompt(&p);
+			if (is_tty)
+				free_prompt(&p);
 			free(line);
-			continue ;
+			continue;
 		}
 
 		// Tokenize input
@@ -260,7 +281,8 @@ char *prompt()
 		if (!cmds)
 		{
 			// write(2, "Parser returned NULL\n", 21);
-			free_prompt(&p);
+			if (is_tty)
+				free_prompt(&p);
 			free(line);
 			continue; // safely skip to next iteration
 		}
@@ -271,7 +293,8 @@ char *prompt()
 		if (prepare_heredocs(cmds) != 0)
 		{
 			free_cmd_pipeline(cmds);
-			free_prompt(&p);
+			if (is_tty)
+				free_prompt(&p);
 			free(line);
 			continue;
 		}
@@ -283,7 +306,8 @@ char *prompt()
 		free_cmd_pipeline(cmds);
 
 		// Free prompt and input line
-		free_prompt(&p);
+		if (is_tty)
+			free_prompt(&p);
 		free(line);
 	}
 

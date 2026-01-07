@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_add_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/06 17:07:35 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/07 12:52:48 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,51 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	argv_add(t_cmd *cmd, char *word, int expandable)
+static int	argv_count(t_cmd *cmd)
 {
-	int		i;
+	int	count;
+
+	count = 0;
+	while (cmd->argv && cmd->argv[count])
+		count++;
+	return (count);
+}
+
+static t_cmd	*argv_extend(t_cmd *cmd, int current_count, char *word, int expandable)
+{
 	char	**new_argv;
 	int		*new_exp;
-	int		j;
+	int		i;
 
-	i = 0;
-	j = 0;
-	while (cmd->argv && cmd->argv[i])
-		i++;
-	new_argv = malloc(sizeof(char *) * (i + 2));
+	new_argv = malloc(sizeof(char *) * (current_count + 2));
 	if (!new_argv)
-		return (0);
-	new_exp = malloc(sizeof(int) * (i + 1));
+		return (NULL);
+	new_exp = malloc(sizeof(int) * (current_count + 1));
 	if (!new_exp)
-		return (free(new_argv), 0);
-	while (j < i)
+		return (free(new_argv), NULL);
+	i = 0;
+	while (i < current_count)
 	{
-		new_argv[j] = cmd->argv[j];
-		new_exp[j] = cmd->argv_expandable[j];
-		j++;
+		new_argv[i] = cmd->argv[i];
+		new_exp[i] = cmd->argv_expandable[i];
+		i++;
 	}
 	new_argv[i] = ft_strdup(word);
 	if (!new_argv[i])
-		return (0);
+		return (free(new_argv), free(new_exp), NULL);
 	new_argv[i + 1] = NULL;
 	new_exp[i] = expandable;
 	free(cmd->argv);
 	free(cmd->argv_expandable);
 	cmd->argv = new_argv;
 	cmd->argv_expandable = new_exp;
-	return (1);
+	return (cmd);
+}
+
+t_cmd	*argv_add(t_cmd *cmd, char *word, int expandable)
+{
+	int	current_count;
+
+	current_count = argv_count(cmd);
+	return (argv_extend(cmd, current_count, word, expandable));
 }
