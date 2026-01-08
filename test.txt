@@ -1,5 +1,1 @@
-hello, a quick test
-to see if things work as expected
-but also to see how much we are improving
-so yeah that's about it
-goodbye
+hai

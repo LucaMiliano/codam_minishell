@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/07 12:52:48 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/08 14:59:20 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ static t_cmd	*argv_extend(t_cmd *cmd, int current_count, char *word, int expanda
 	int		i;
 
 	new_argv = malloc(sizeof(char *) * (current_count + 2));
-	if (!new_argv)
-		return (NULL);
 	new_exp = malloc(sizeof(int) * (current_count + 1));
 	if (!new_exp)
-		return (free(new_argv), NULL);
+		return (free(new_argv), free(new_exp), NULL);
 	i = 0;
 	while (i < current_count)
 	{
