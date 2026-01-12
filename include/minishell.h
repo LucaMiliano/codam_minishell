@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/07 12:29:23 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/12 00:39:32 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,10 @@ int			check_pipe_syntax(t_tokens *tokens);
 // expand.c
 void		expand_pipeline(t_cmd *cmds);
 char		*expand_word(char *word);
+// expand_utils.c
+char		*get_var_value(const char *s, int *consumed);
+char		*append_char(char *result, char c);
+char		*append_expanded_var(char *result, char *word, int *i);
 //////////////////
 //     exec     //
 //////////////////

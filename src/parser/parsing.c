@@ -3,17 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/07 12:52:48 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/12 02:32:58 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	- tokens defined in tokenization.c should be parsed into command pipeline here
-	- Validate syntax here (e.g., pipe at ends, consecutive pipes, missing filename)
-*/
 // Step 2: handle new command (if necessary)
 // Step 3: handle redirections
 // Step 4: handle WORD tokens (argv)
@@ -24,9 +20,6 @@
 /////////////////////////////////////////////////////////////////////////
 ////			refactor ideas not complete yet but close			/////
 /////////////////////////////////////////////////////////////////////////
-
-
-
 
 int	is_redir(enum e_toktype tok_type)
 {

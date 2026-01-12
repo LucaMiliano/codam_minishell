@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_add_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/08 14:59:20 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/12 01:04:15 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ static int	argv_count(t_cmd *cmd)
 	return (count);
 }
 
-static t_cmd	*argv_extend(t_cmd *cmd, int current_count, char *word, int expandable)
+static t_cmd	*argv_extend(t_cmd *cmd, int cur_count, char *word, int exp)
 {
 	char	**new_argv;
 	int		*new_exp;
 	int		i;
 
-	new_argv = malloc(sizeof(char *) * (current_count + 2));
-	new_exp = malloc(sizeof(int) * (current_count + 1));
+	new_argv = malloc(sizeof(char *) * (cur_count + 2));
+	new_exp = malloc(sizeof(int) * (cur_count + 1));
 	if (!new_exp)
 		return (free(new_argv), free(new_exp), NULL);
 	i = 0;
-	while (i < current_count)
+	while (i < cur_count)
 	{
 		new_argv[i] = cmd->argv[i];
 		new_exp[i] = cmd->argv_expandable[i];
@@ -45,7 +45,7 @@ static t_cmd	*argv_extend(t_cmd *cmd, int current_count, char *word, int expanda
 	if (!new_argv[i])
 		return (free(new_argv), free(new_exp), NULL);
 	new_argv[i + 1] = NULL;
-	new_exp[i] = expandable;
+	new_exp[i] = exp;
 	free(cmd->argv);
 	free(cmd->argv_expandable);
 	cmd->argv = new_argv;

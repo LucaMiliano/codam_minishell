@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 01:40:20 by cpinas            #+#    #+#             */
-/*   Updated: 2025/12/28 18:11:18 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/12 00:42:36 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_tokens(t_tokens *lst)
 {
-	t_tokens *tmp;
+	t_tokens	*tmp;
 
 	while (lst)
 	{
@@ -25,12 +25,13 @@ void	free_tokens(t_tokens *lst)
 	}
 }
 
-void free_split(char **arr)
+void	free_split(char **arr)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (!arr)
-		return;
+		return ;
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);

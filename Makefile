@@ -37,6 +37,7 @@ SRCS		:=	main.c \
 				parser/parser_redir.c \
 				parser/parser_utils.c \
 				expand/expand.c \
+				expand/expand_utils.c \
 				builtins/builtins.c \
 				exec/exec_cmd.c \
 				exec/exec_pipeline.c \
