@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:03:37 by lpieck            #+#    #+#             */
-/*   Updated: 2025/12/28 18:53:48 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/14 15:00:27 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int main(int ac, char **av, char **envp)
 
 	setup_signals();	// install SIGINT/SIGQUIT
 	prompt();			// run the shell loop, passing envp if needed for expansions later
-
 	return (0);
 }
 

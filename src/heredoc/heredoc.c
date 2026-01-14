@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/12 03:08:51 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/14 14:40:01 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,12 @@ static int	handle_heredoc(t_redir *redir)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+			break ;
 		if (ft_strncmp(line, redir->target,
 				ft_strlen(redir->target) + 1) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		if (redir->expandable)
 		{
