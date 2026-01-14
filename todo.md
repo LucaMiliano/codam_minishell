@@ -7,6 +7,6 @@ prompt_utils.c
 prompt.c
 
 LUCA
-builtins_exit.c
+builtins_exit.c done
 heredoc.c
 parsing.c

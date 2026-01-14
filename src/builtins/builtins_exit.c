@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 19:59:37 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/05 14:11:01 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/14 15:19:40 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	builtin_exit(char **argv)
 	long	status;
 
 	if (isatty(STDIN_FILENO))
-		// write(STDOUT_FILENO, "exit\n", 5);
+		write(STDOUT_FILENO, "exit\n", 5);
 	if (!argv[1])
 	{
 		exit(g_shell.last_status);
