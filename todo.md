@@ -8,5 +8,5 @@ prompt.c
 
 LUCA
 builtins_exit.c done
-heredoc.c
+heredoc.c done
 parsing.c

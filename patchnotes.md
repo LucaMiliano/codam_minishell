@@ -10,3 +10,21 @@ TODO / bugs to fix
 
 
  prompt.c > fgets vervangen
+
+ BUG:
+ meerdere commands over meerdere lines laten uitvoeren:
+
+ ls
+/bin/ls
+nosuchcommand
+echo $?
+
+bovenstaand zou gewoon moeten werken bijvoorbeeld.
+
+NOG EEN BUG:
+echo hello world
+echo ""
+echo ""
+
+zie deze chat voor een hoop buggy commands die we moeten fixen:
+https://chatgpt.com/share/696e2ce7-675c-8010-b912-77b44b93de8b

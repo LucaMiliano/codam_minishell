@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/12 02:32:58 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/19 14:11:48 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	parse_pipe(t_tokens **tokens, t_cmd **current)
 	*tokens = (*tokens)->next;
 	return (1);
 }
+
 int	parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head)
 {
 	t_tokens	*file;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/14 14:40:01 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/19 14:10:30 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,46 @@
 #include <unistd.h>
 
 
-static char *expand_variables(const char *line)
-{
-	char *res = ft_strdup(""); // start with empty string
-	const char *p = line;
 
+static char	*append_variable(char *res, const char **p, const char *line)
+{
+	char	*var;
+	char	*val;
+	char	*old;
+	int		start;
+
+	(*p)++;
+	start = *p - line;
+	while (ft_isalnum(**p) || **p == '_')
+		(*p)++;
+	var = ft_substr(line, start, *p - line - start);
+	val = find_in_env(var);
+	old = res;
+	if (val != NULL)
+		res = ft_strjoin(res, val);
+	else
+		res = ft_strdup(res);
+	free(old);
+	free(var);
+	return (res);
+}
+
+static char	*expand_variables(const char *line)
+{
+	char		*res;
+	const char	*p;
+
+	res = ft_strdup("");
+	if (!res)
+		return (NULL);
+	p = line;
 	while (*p)
 	{
 		if (*p == '$' && ft_isalpha(*(p + 1)))
-		{
-			p++;
-			int start = p - line;
-			while (ft_isalnum(*p) || *p == '_')
-				p++;
-			char *var = ft_substr(line, start, p - line);
-			char *val = find_in_env(var);
-			free(var);
-			char *tmp = res;
-			if (val != NULL)
-				res = ft_strjoin(res, val);
-			else
-				res = ft_strdup(res);
-			free(tmp);
-		}
+			res = append_variable(res, &p, line);
 		else
 		{
-			char tmp[2] = {*p, 0};
-			char *old = res;
-			res = ft_strjoin(res, tmp);
-			free(old);
+			res = append_char(res, *p);
 			p++;
 		}
 	}
@@ -128,13 +139,57 @@ static int	handle_heredoc(t_redir *redir)
 	return (0);
 }
 
+static void	heredoc_child_process(int *pipefd, t_redir *redir)
+{
+	setup_signals_heredoc();
+	close(pipefd[0]);
+	redir->fd = pipefd[1];
+	if (handle_heredoc(redir) != 0)
+		exit(1);
+	close(pipefd[1]);
+	exit(0);
+}
+
+static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
+{
+	int		status;
+
+	close(pipefd[1]);
+	redir->fd = pipefd[0];
+	waitpid(pid, &status, 0);
+	setup_signals();
+	if (WIFSIGNALED(status))
+	{
+		g_shell.last_status = 128 + WTERMSIG(status);
+		return (1);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+	{
+		g_shell.last_status = WEXITSTATUS(status);
+		return (1);
+	}
+	return (0);
+}
+
+static int	handle_redir_heredoc(t_redir *redir)
+{
+	int		pipefd[2];
+	pid_t	pid;
+
+	if (pipe(pipefd) == -1)
+		return (1);
+	pid = fork();
+	if (pid == -1)
+		return (1);
+	if (pid == 0)
+		heredoc_child_process(pipefd, redir);
+	return (heredoc_parent_process(pid, pipefd, redir));
+}
+
 int	prepare_heredocs(t_cmd *cmds)
 {
 	t_cmd	*cmd;
 	t_redir	*redir;
-	int		pipefd[2];
-	pid_t	pid;
-	int		status;
 
 	cmd = cmds;
 	while (cmd)
@@ -144,43 +199,8 @@ int	prepare_heredocs(t_cmd *cmds)
 		{
 			if (redir->type == R_HEREDOC)
 			{
-				if (pipe(pipefd) == -1)
+				if (handle_redir_heredoc(redir) != 0)
 					return (1);
-
-				pid = fork();
-				if (pid == -1)
-					return (1);
-
-				if (pid == 0)
-				{
-					/* CHILD: read heredoc, write to pipe */
-					setup_signals_heredoc();
-					close(pipefd[0]);
-					redir->fd = pipefd[1];
-					if (handle_heredoc(redir) != 0)
-						exit(1);
-					close(pipefd[1]);
-					exit(0);
-				}
-				else
-				{
-					/* PARENT: keep read end */
-					close(pipefd[1]);
-					redir->fd = pipefd[0];
-					waitpid(pid, &status, 0);
-					setup_signals();
-
-					if (WIFSIGNALED(status))
-					{
-						g_shell.last_status = 128 + WTERMSIG(status);
-						return (1);
-					}
-					if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-					{
-						g_shell.last_status = WEXITSTATUS(status);
-						return (1);
-					}
-				}
 			}
 			redir = redir->next;
 		}
