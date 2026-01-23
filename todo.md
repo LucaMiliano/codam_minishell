@@ -9,4 +9,4 @@ prompt.c
 LUCA
 builtins_exit.c done
 heredoc.c done
-parsing.c
+parsing.c done

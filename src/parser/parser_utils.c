@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:32:00 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/12 01:05:22 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/23 15:14:36 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,20 @@ int	check_pipe_syntax(t_tokens *tokens)
 		return (0);
 	}
 	return (check_pipe_position_validity(tokens));
+}
+
+t_tokens	*skip_heredoc_body(t_tokens *delim)
+{
+	t_tokens	*cur;
+
+	cur = delim->next;
+	while (cur)
+	{
+		if (cur->type == TOK_WORD
+			&& ft_strncmp(cur->value,
+				delim->value, ft_strlen(delim->value)) == 0)
+			return (cur->next);
+		cur = cur->next;
+	}
+	return (NULL);
 }

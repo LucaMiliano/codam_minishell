@@ -3,59 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:25:48 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/19 14:11:48 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/23 16:05:56 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Step 2: handle new command (if necessary)
-// Step 3: handle redirections
-// Step 4: handle WORD tokens (argv)
-// Step 5: handle PIPE tokens (split commands)
-
 #include "minishell.h"
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
-////			refactor ideas not complete yet but close			/////
-/////////////////////////////////////////////////////////////////////////
-
-int	is_redir(enum e_toktype tok_type)
-{
-	return (tok_type == TOK_REDIR_IN || tok_type == TOK_REDIR_OUT
-		|| tok_type == TOK_APPEND || tok_type == TOK_HEREDOC);
-}
-
-int	redir_alloc_error(t_cmd **head)
-{
-	free_cmd_pipeline(*head);
-	return (0);
-}
-
-int	heredoc_syntax_error(t_cmd **head)
-{
-	write(2, "minishell: syntax error near heredoc\n", 37);
-	free_cmd_pipeline(*head);
-	return (0);
-}
-
-int	heredoc_alloc_error(t_cmd **head)
-{
-	free_cmd_pipeline(*head);
-	return (0);
-}
-
-t_redir_type	redir_type(enum e_toktype tok_type)
-{
-	if (tok_type == TOK_REDIR_IN)
-		return (R_IN);
-	if (tok_type == TOK_REDIR_OUT)
-		return (R_OUT);
-	if (tok_type == TOK_APPEND)
-		return (R_APPEND);
-	return (R_HEREDOC);
-}
 
 int	parse_word(t_tokens **tokens, t_cmd *cmd)
 {
@@ -91,50 +46,13 @@ int	parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head)
 		free_cmd_pipeline(cmd);
 		return (0);
 	}
-	redir = redir_new(redir_type((*tokens)->type), file->value, file->expandable);
+	redir = redir_new(redir_type((*tokens)->type),
+			file->value, file->expandable);
 	if (!redir)
-		return (redir_alloc_error(head));
+		return (free_cmd_pipeline(*head), 0);
 	cmd_add_redir(cmd, redir);
 	*tokens = file->next;
 	return (1);
-}
-
-t_tokens	*skip_heredoc_body(t_tokens *delim)
-{
-	t_tokens	*cur;
-
-	cur = delim->next;
-	while (cur)
-	{
-		if (cur->type == TOK_WORD
-			&& ft_strncmp(cur->value, delim->value, ft_strlen(delim->value)) == 0)
-			return (cur->next);
-		cur = cur->next;
-	}
-	return (NULL);
-}
-
-int	parse_heredoc(t_tokens **tokens, t_cmd *cmd, t_cmd **head)
-{
-	t_tokens	*delim;
-	t_redir		*redir;
-
-	delim = (*tokens)->next;
-	if (!delim || delim->type != TOK_WORD)
-		return (heredoc_syntax_error(head));
-	redir = redir_new(R_HEREDOC, delim->value, delim->expandable);
-	if (!redir)
-		return (heredoc_alloc_error(head));
-	cmd_add_redir(cmd, redir);
-	*tokens = skip_heredoc_body(delim);
-	return (1);
-}
-
-int	parse_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head)
-{
-	if ((*tokens)->type == TOK_HEREDOC)
-		return (parse_heredoc(tokens, cmd, head));
-	return (parse_file_redir(tokens, cmd, head));
 }
 
 int	parse_token(t_tokens **tokens, t_cmd **current, t_cmd **head)
@@ -235,7 +153,8 @@ t_cmd	*parse(t_tokens *tokens)
 // 			else if (tokens->type == TOK_REDIR_OUT) rtype = R_OUT;
 // 			else rtype = R_APPEND;
 
-// 			t_redir *redir = redir_new(rtype, file_token->value, file_token->expandable);
+// 			t_redir *redir = redir_new(rtype,
+// file_token->value, file_token->expandable);
 // 			if (!redir)
 // 			{
 // 				free_cmd_pipeline(head);
@@ -256,7 +175,8 @@ t_cmd	*parse(t_tokens *tokens)
 // 			}
 
 // 			// create redir for HEREDOC with the delimiter
-// 			t_redir *redir = redir_new(R_HEREDOC, delimiter_token->value, delimiter_token->expandable);
+// 			t_redir *redir = redir_new(R_HEREDOC,
+// delimiter_token->value, delimiter_token->expandable);
 // 			if (!redir)
 // 			{
 // 				free_cmd_pipeline(head);
