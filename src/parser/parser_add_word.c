@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_add_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/12 01:04:15 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/27 13:55:53 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ static t_cmd	*argv_extend(t_cmd *cmd, int cur_count, char *word, int exp)
 	int		i;
 
 	new_argv = malloc(sizeof(char *) * (cur_count + 2));
+	if (!new_argv)
+		return (NULL);
 	new_exp = malloc(sizeof(int) * (cur_count + 1));
 	if (!new_exp)
-		return (free(new_argv), free(new_exp), NULL);
+		return (free(new_argv), NULL);
 	i = 0;
 	while (i < cur_count)
 	{
+//		new_argv[i] = ft_strdup(cmd->argv[i]); this might be better to fix echo bugs?
 		new_argv[i] = cmd->argv[i];
 		new_exp[i] = cmd->argv_expandable[i];
 		i++;

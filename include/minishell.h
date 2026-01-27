@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/19 13:32:59 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/27 11:23:45 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <readline/readline.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 //////////////////
 //   colors     //
@@ -153,8 +156,13 @@ t_cmd		*argv_add(t_cmd *cmd, char *word, int expandable);
 t_cmd		*cmd_new(void);
 // parser_redir.c
 void		cmd_add_redir(t_cmd *cmd, t_redir *redir);
+t_redir_type	redir_type(enum e_toktype tok_type);
+int	parse_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
+int	is_redir(enum e_toktype tok_type);
 // parser_utils.c
 int			check_pipe_syntax(t_tokens *tokens);
+t_tokens	*skip_heredoc_body(t_tokens *delim);
+int	parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
 //////////////////
 //    expand    //
 //////////////////
@@ -181,6 +189,7 @@ int			is_builtin(char *cmd);
 //////////////////
 // heredoc.c
 int			prepare_heredocs(t_cmd *cmds);
+char	*expand_variables(const char *line);
 //////////////////
 // redirections //
 //////////////////

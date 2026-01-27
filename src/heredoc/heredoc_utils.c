@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 16:00:58 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/23 16:03:58 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/27 11:23:36 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*append_variable(char *res, const char **p, const char *line)
 	return (res);
 }
 
-static char	*expand_variables(const char *line)
+char	*expand_variables(const char *line)
 {
 	char		*res;
 	const char	*p;

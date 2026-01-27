@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/23 16:04:33 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/01/27 11:18:37 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 static int	handle_heredoc(t_redir *redir)
 {

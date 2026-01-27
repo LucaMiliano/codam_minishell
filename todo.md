@@ -10,3 +10,7 @@ LUCA
 builtins_exit.c done
 heredoc.c done
 parsing.c done
+
+
+
+--Makefile norminetten(geen wildcards etc)

@@ -14,7 +14,7 @@ TODO / bugs to fix
  BUG:
  meerdere commands over meerdere lines laten uitvoeren:
 
- ls
+ls
 /bin/ls
 nosuchcommand
 echo $?
