@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:41:00 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/04 21:01:13 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/01/28 15:30:11 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 void	exec_absolute_or_relative(t_cmd *cmd)
 {
 	execve(cmd->argv[0], cmd->argv, g_shell.env);
-	perror(cmd->argv[0]);
+	// perror(cmd->argv[0]);
+	perror("execve");
 	exit(126);
 }
 
