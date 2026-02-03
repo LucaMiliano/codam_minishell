@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/29 17:43:33 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/03 15:33:42 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,11 @@ int prompt(t_shell *shell)
 	t_cmd		*cmds;
 	int			is_tty;
 	int			ret;
+	int			saved_stdin;
 
 	is_tty = isatty(STDIN_FILENO);
-
+	saved_stdin = dup(STDIN_FILENO);
+	
 	// Build prompt
 	if (is_tty)
 	{
@@ -166,7 +168,7 @@ int prompt(t_shell *shell)
 
 	if (is_tty)
 		line = readline(p.prompt_str);
-	else
+	else 
 	{
 		char buf[4096];
 		ssize_t bytes_read = read(STDIN_FILENO, buf, sizeof(buf) - 1);
@@ -227,6 +229,8 @@ int prompt(t_shell *shell)
 	free_cmd_pipeline(cmds);
 	free(line);
 
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
 	if (is_tty)
 		free_prompt(&p);
 
