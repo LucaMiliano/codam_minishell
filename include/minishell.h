@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/29 19:36:57 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/04 12:14:42 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int			handle_operator_exclusion(char *str, int *i);
 t_tokens	*new_token(char *val, int type, int quoted, int exp);
 void		token_add_back(t_tokens **tokens, t_tokens *new);
 // debug_tokens.c
-void		debug_cmd(t_cmd *cmd);
+// void		debug_cmd(t_cmd *cmd);
 void		print_tokens(t_tokens *lst);
 void		free_tokens(t_tokens *lst);
 void		print_redirs(t_redir *redir);

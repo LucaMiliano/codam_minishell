@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/29 20:21:14 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/04 12:14:33 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	child_process(t_shell *shell, t_cmd *cmd, int in_fd, int out_fd)
 
 static int handle_parent_builtin(t_shell *shell, t_cmd *cmd)
 {
-	debug_cmd(cmd);
+	// debug_cmd(cmd);
 
 	if (!cmd || cmd->next)
 		return 0;

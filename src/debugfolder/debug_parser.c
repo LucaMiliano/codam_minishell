@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:52:23 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/29 19:36:04 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/04 12:14:05 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void print_pipeline(t_cmd *head)
 	}
 }
 
-void debug_cmd(t_cmd *cmd)
-{
-	printf("CMD DEBUG:\n");
-	printf("  argv: %p\n", cmd->argv);
-	if (cmd->argv)
-		printf("  argv[0]: %s\n", cmd->argv[0]);
-	printf("  redirs: %p\n", cmd->redirs);
-	printf("  next: %p\n", cmd->next);
-}
+// void debug_cmd(t_cmd *cmd)
+// {
+// 	printf("CMD DEBUG:\n");
+// 	printf("  argv: %p\n", cmd->argv);
+// 	if (cmd->argv)
+// 		printf("  argv[0]: %s\n", cmd->argv[0]);
+// 	printf("  redirs: %p\n", cmd->redirs);
+// 	printf("  next: %p\n", cmd->next);
+// }
