@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:41:00 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/25 18:18:49 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:18:30 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,18 @@ int	is_builtin(char *cmd)
 	if (ft_strncmp(cmd, "unset", ft_strlen("unset") + 1) == 0)
 		return (1);
 	return (0);
+}
+
+void	save_stdio1(int *saved_stdin, int *saved_stdout)
+{
+	*saved_stdin = dup(STDIN_FILENO);
+	*saved_stdout = dup(STDOUT_FILENO);
+}
+
+void	restore_stdio1(int saved_stdin, int saved_stdout)
+{
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
 }

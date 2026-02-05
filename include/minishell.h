@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 14:06:49 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:24:15 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define MAGENTA	"\001\033[1;35m\002"
 # define CYAN	"\001\033[1;36m\002"
 # define WHITE	"\001\033[1;37m\002"
+
+
 
 // typedef struct s_shell
 // {
@@ -236,6 +238,9 @@ void		execute_pipeline(t_shell *shell, t_cmd *cmds);
 // void		exec_absolute_or_relative(t_cmd *cmd);
 void		exec_absolute_or_relative(t_shell *shell, t_cmd *cmd);
 int			is_builtin(char *cmd);
+// both for fd issue does live in exec_utils.c
+void	save_stdio1(int *saved_stdin, int *saved_stdout);
+void	restore_stdio1(int saved_stdin, int saved_stdout);
 //////////////////
 //  heredoc     //
 //////////////////

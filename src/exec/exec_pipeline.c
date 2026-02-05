@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 13:26:50 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:19:49 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,33 +53,62 @@ static void	child_process(t_shell *shell, t_cmd *cmd, int in_fd, int out_fd)
 // 	return (0);
 // }
 
-static int handle_parent_builtin(t_shell *shell, t_cmd *cmd)
+static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
 {
-	// debug_cmd(cmd);
+	int saved_in;
+	int saved_out;
 
 	if (!cmd || cmd->next)
 		return 0;
-
-	/* 1. Apply redirections first (always) */
+	save_stdio1(&saved_in, &saved_out);
 	if (cmd->redirs)
 		apply_redirections(cmd->redirs);
 
-	/* 2. Redirections-only command: valid, nothing to execute */
 	if (!cmd->argv || !cmd->argv[0])
+	{
+		restore_stdio1(saved_in, saved_out);
 		return 1;
-
-	/* 3. Now it's legal to inspect argv[0] */
+	}
 	if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
 		|| ft_strncmp(cmd->argv[0], "exit", 5) == 0
 		|| ft_strncmp(cmd->argv[0], "export", 7) == 0
 		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0)
 	{
 		g_last_status = exec_builtin(cmd, shell);
+		restore_stdio1(saved_in, saved_out);
 		return 1;
 	}
-
+	restore_stdio1(saved_in, saved_out);
 	return 0;
 }
+
+// static int handle_parent_builtin(t_shell *shell, t_cmd *cmd)
+// {
+// 	// debug_cmd(cmd);
+
+// 	if (!cmd || cmd->next)
+// 		return 0;
+
+// 	/* 1. Apply redirections first (always) */
+// 	if (cmd->redirs)
+// 		apply_redirections(cmd->redirs);
+
+// 	/* 2. Redirections-only command: valid, nothing to execute */
+// 	if (!cmd->argv || !cmd->argv[0])
+// 		return 1;
+
+// 	/* 3. Now it's legal to inspect argv[0] */
+// 	if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
+// 		|| ft_strncmp(cmd->argv[0], "exit", 5) == 0
+// 		|| ft_strncmp(cmd->argv[0], "export", 7) == 0
+// 		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0)
+// 	{
+// 		g_last_status = exec_builtin(cmd, shell);
+// 		return 1;
+// 	}
+
+// 	return 0;
+// }
 
 static void	setup_pipe(t_cmd *cmd, int pipefd[2])
 {
