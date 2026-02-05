@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 09:56:35 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 14:06:49 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,20 @@ void		print_tokens_debug(t_tokens *tokens);
 t_cmd		*parse(t_tokens *tokens);
 t_cmd		*argv_add(t_cmd *cmd, char *word, int expandable);
 int			parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
+int	heredoc_syntax_error(t_cmd **head);
+int	heredoc_alloc_error(t_cmd **head);
+t_redir_type	redir_type(enum e_toktype tok_type);
+int	redir_alloc_error(t_cmd **head);
+// parsing2.c
+int	parse_word(t_tokens **tokens, t_cmd *cmd);
+int	parse_pipe(t_tokens **tokens, t_cmd **current);
+int	parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
+t_tokens	*skip_heredoc_body(t_tokens *delim);
+// parsing3.c
+int	parse_heredoc(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
+int	parse_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head);
+int	parse_token(t_tokens **tokens, t_cmd **current, t_cmd **head);
+t_cmd	*parse(t_tokens *tokens);
 // parser_cmd.c
 t_cmd		*cmd_new(void);
 // parser_redir.c

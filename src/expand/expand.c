@@ -6,14 +6,14 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 17:13:15 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/25 15:52:39 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 13:21:36 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-char	*expand_word(char *word, t_shell *shell) //edit shell;
+char	*expand_word(char *word, t_shell *shell)
 {
 	int		i;
 	char	*result;
@@ -37,7 +37,7 @@ char	*expand_word(char *word, t_shell *shell) //edit shell;
 	return (result);
 }
 
-static void	expand_argv(t_cmd *cmd, t_shell *shell) //edit t_shell *shell
+static void	expand_argv(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 	char	*expanded;
@@ -47,7 +47,7 @@ static void	expand_argv(t_cmd *cmd, t_shell *shell) //edit t_shell *shell
 	{
 		if (cmd->argv_expandable[i])
 		{
-			expanded = expand_word(cmd->argv[i], shell); //edit shell;
+			expanded = expand_word(cmd->argv[i], shell);
 			if (expanded)
 			{
 				free(cmd->argv[i]);

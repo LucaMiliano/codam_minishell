@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:03:37 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/29 14:39:24 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 13:36:35 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int main(int ac, char **av, char **envp)
 	if (g_last_status != 0)
 	{
 		shell.last_status = g_last_status;
-		g_last_status = 0;
+		// g_last_status = 0;
 	}
 	}
 	// promt() -> promt(&shell); and free_env(shell.env) added/changed step 1

@@ -33,6 +33,8 @@ SRCS		:=	main.c \
 				lexer/tokenization.c \
 				lexer/tokenization_utils.c \
 				parser/parsing.c \
+				parser/parsing2.c \
+				parser/parsing3.c \
 				parser/parser_add_word.c \
 				parser/parser_cmd.c \
 				parser/parser_redir.c \
