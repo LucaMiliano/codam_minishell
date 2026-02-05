@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 22:32:31 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/29 17:43:07 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 08:59:31 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,24 @@ void	free_cmd_pipeline(t_cmd *cmd)
 void free2_prompt(t_prompt *p)
 {
 	if (p->prompt_str)
+	{
 		free(p->prompt_str);
+		p->prompt_str = NULL;
+	}
 	if (p->cwd)
+	{
 		free(p->cwd);
+		p->cwd = NULL;
+	}
 	if (p->user)
+	{
 		free(p->user);
+		p->user = NULL;
+	}
 	if (p->host)
+	{
 		free(p->host);
+		p->host = NULL;
+	}
 }
+

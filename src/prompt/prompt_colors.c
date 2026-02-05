@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 21:07:52 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/18 20:06:34 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 09:39:39 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,51 @@
 
 void	color_prompt(t_prompt *p)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_strjoin_multiple(
-		GREEN, p->user, RESET, "@",
-		CYAN, p->host, RESET, " ",
-		YELLOW, p->cwd, RESET, " ",
-		RED, "$ ", RESET,
-		NULL
-	);
+			GREEN, p->user, RESET, "@",
+			CYAN, p->host, RESET, " ",
+			YELLOW, p->cwd, RESET, " ",
+			RED, "$ ", RESET,
+			NULL
+			);
 	p->prompt_str = tmp;
-} // zo is best goed al voor kleur
+}
+
+static char	*join_and_free(char *result, const char *str)
+{
+	char	*tmp;
+
+	tmp = result;
+	result = ft_strjoin(tmp, str);
+	free(tmp);
+	return (result);
+}
 
 char	*ft_strjoin_multiple(const char *first, ...)
 {
-	va_list args;
-	const char *str;
-	char *result;
-	char *tmp;
+	va_list		args;
+	const char	*str;
+	char		*result;
 
 	if (!first)
-		return NULL;
+		return (NULL);
 	result = ft_strdup(first);
 	if (!result)
-		return NULL;
+		return (NULL);
 	va_start(args, first);
-	while ((str = va_arg(args, const char *)) != NULL)
+	str = va_arg(args, const char *);
+	while (str)
 	{
-		tmp = result;
-		result = ft_strjoin(result, str); // use your libft ft_strjoin
-		free(tmp);
+		result = join_and_free(result, str);
 		if (!result)
 		{
 			va_end(args);
-			return NULL;
+			return (NULL);
 		}
+		str = va_arg(args, const char *);
 	}
 	va_end(args);
-	return result;
+	return (result);
 }
-
-

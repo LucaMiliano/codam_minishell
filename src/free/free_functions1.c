@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 01:40:20 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/25 19:24:25 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 08:13:46 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,14 @@ void	free_env(char **env) // unused right now;
 			free(env[i]);  // Free each string in the array
 		free(env);  // Free the array itself
 	}
+}
+
+// part of promt refactor
+int prompt_exit(t_prompt *p, int is_tty, int saved_stdin, int ret)
+{
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
+	if (is_tty)
+		free_prompt(p);
+	return (ret);
 }

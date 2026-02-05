@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 20:49:43 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/27 15:02:57 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 09:44:54 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-// Directory (path)
 char	*get_current_directory(void)
 {
 	char	*cwd;
@@ -45,36 +44,35 @@ char	*get_current_directory(void)
 	return (cwd);
 }
 
-// Username
 char	*get_username(t_shell *shell)
 {
-	char *val;
+	char	*val;
 
 	val = find_in_env(shell, "USER");
 	if (val != NULL)
-		return ft_strdup(val);
-	return ft_strdup("user");
+		return (ft_strdup(val));
+	return (ft_strdup("user"));
 }
 
-// Hostname
-char *get_hostname()
+char	*get_hostname(void)
 {
-	int fd = open("/etc/hostname", O_RDONLY);
-	if (fd < 0)
-		return ft_strdup("host");
+	int		fd;
+	int		n;
+	char	buf[256];
 
-	char buf[256];
-	int n = read(fd, buf, 255);
+	fd = open("/etc/hostname", O_RDONLY);
+	if (fd < 0)
+		return (ft_strdup("host"));
+	n = read(fd, buf, 255);
 	close(fd);
 	if (n <= 0)
-		return ft_strdup("host");
+		return (ft_strdup("host"));
 	buf[n] = '\0';
 	if (buf[n - 1] == '\n')
 		buf[n - 1] = '\0';
-	return ft_strdup(buf);
+	return (ft_strdup(buf));
 }
 
-// Build_promt
 char	*build_prompt(t_prompt *p)
 {
 	char	*tmp;
@@ -90,17 +88,17 @@ char	*build_prompt(t_prompt *p)
 	free(tmp);
 	out = ft_strjoin(tmp2, "$ ");
 	free(tmp2);
-
 	return (out);
 }
 
 void	free_prompt(t_prompt *p)
 {
-	if (p->cwd) free(p->cwd);
-	if (p->user) free(p->user);
-	if (p->host) free(p->host);
-	if (p->prompt_str) free(p->prompt_str);
+	if (p->cwd)
+		free(p->cwd);
+	if (p->user)
+		free(p->user);
+	if (p->host)
+		free(p->host);
+	if (p->prompt_str)
+		free(p->prompt_str);
 }
-
-
-

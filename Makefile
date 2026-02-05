@@ -24,6 +24,7 @@ LDFLAGS		:= -lreadline -L$(LIBFT_DIR) -lft
 # ---- SOURCES ----
 SRCS		:=	main.c \
 				prompt/prompt.c \
+				prompt/prompt2.c \
 				prompt/prompt_colors.c \
 				prompt/prompt_utils.c \
 				signals/signals.c \
