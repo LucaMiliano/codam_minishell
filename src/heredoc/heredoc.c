@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/27 16:47:16 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 16:17:41 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,9 +259,10 @@ static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 	close(pipefd[1]);
 	redir->fd = pipefd[0];
 	printf("[PARENT] pid=%d pgrp=%d\n",
-	   getpid(), getpgrp()); // two sentences above debug
+		getpid(), getpgrp()); // two sentences above debug
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	tcsetpgrp(STDIN_FILENO, getpgrp());
+	// tcsetpgrp(STDIN_FILENO, getpgrp());
 
 	setup_signals();
 	if (WIFSIGNALED(status))
