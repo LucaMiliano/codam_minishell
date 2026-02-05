@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 09:16:05 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:25:46 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,30 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+int	has_unclosed_quotes(char *str)
+{
+    int		i;
+    char	quote;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == '"' || str[i] == '\'')
+        {
+            quote = str[i];
+            i++;
+            while (str[i] && str[i] != quote)
+                i++;
+            if (!str[i])
+                return (1);  // Found unclosed quote
+            i++;
+        }
+        else
+            i++;
+    }
+    return (0);
+}
 
 char	*read_from_stdin(void)
 {
@@ -33,12 +57,37 @@ char	*read_from_stdin(void)
 char	*get_prompt_line(t_prompt *p, int is_tty)
 {
 	char	*line;
+	char	*continuation;
+    char	*temp;
 
 	if (is_tty)
 	{
 		line = readline(p->prompt_str);
+		if (!line)
+			return (NULL);
+		while (has_unclosed_quotes(line))
+        {
+            continuation = readline("> ");
+            if (!continuation)
+            {
+                free(line);
+                return (NULL);
+            }
+            temp = line;
+            line = ft_strjoin(line, "\n");
+            free(temp);
+            if (!line)
+                return (NULL);
+            temp = line;
+            line = ft_strjoin(line, continuation);
+            free(temp);
+            free(continuation);
+            if (!line)
+                return (NULL);
+        }
 		return (line);
 	}
+
 	return (read_from_stdin());
 }
 

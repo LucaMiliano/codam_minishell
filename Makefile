@@ -32,6 +32,7 @@ SRCS		:=	main.c \
 				lexer/tokenization_more_utils.c \
 				lexer/tokenization.c \
 				lexer/tokenization_utils.c \
+				lexer/tokenization_unclosed.c \
 				parser/parsing.c \
 				parser/parsing2.c \
 				parser/parsing3.c \

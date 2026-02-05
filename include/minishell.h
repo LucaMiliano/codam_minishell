@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 15:24:15 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:47:25 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,17 +116,14 @@ typedef struct s_cmd
 // prompt
 // char		*prompt(void);
 // int			prompt(t_shell *shell);
-int prompt(t_shell *shell);
-int build_prompt1(t_shell *shell, t_prompt *p, int is_tty);
-char *get_prompt_line(t_prompt *p, int is_tty);
-char *read_from_stdin(void);
-int handle_line(char *line, t_prompt *p, int is_tty);
-t_cmd *create_cmds(char *line, t_prompt *p, int is_tty);
-int execute_and_cleanup(
-	t_shell *shell,
-	t_cmd *cmds,
-	t_prompt_ctx *ctx);
-	int restore_and_return(int saved_stdin, int ret);
+int		prompt(t_shell *shell);
+int		build_prompt1(t_shell *shell, t_prompt *p, int is_tty);
+char	*get_prompt_line(t_prompt *p, int is_tty);
+char	*read_from_stdin(void);
+int		handle_line(char *line, t_prompt *p, int is_tty);
+t_cmd	*create_cmds(char *line, t_prompt *p, int is_tty);
+int		execute_and_cleanup(t_shell *shell, t_cmd *cmds, t_prompt_ctx *ctx);
+int		restore_and_return(int saved_stdin, int ret);
 // everything above is new prompt (norminette)
 // char 		*prompt(t_shell *shell); // edit shell
 int			builtin_history(char *line);
@@ -159,6 +156,8 @@ void		handle_operator(char *str, int *i, t_tokens **list);
 void		handle_word(char *str, int *i, t_tokens **list);
 char		*extract_word(char *str, int *i, int *quoted, int *expand);
 char		*check_for_quotes(char *str, int *quoted, int *i, int *expand);
+char		*read_until_quote_closed(char *initial_line);
+int			has_unclosed_quotes(char *str);
 // tokenization_utils.c
 int			is_space(char c);
 int			is_operator(char c);

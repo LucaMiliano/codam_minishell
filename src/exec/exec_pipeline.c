@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 15:19:49 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/05 15:49:04 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
 	if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
 		|| ft_strncmp(cmd->argv[0], "exit", 5) == 0
 		|| ft_strncmp(cmd->argv[0], "export", 7) == 0
-		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0)
+		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0
+		|| ft_strncmp(cmd->argv[0], "echo", 5) == 0)
 	{
 		g_last_status = exec_builtin(cmd, shell);
 		restore_stdio1(saved_in, saved_out);
