@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 15:49:04 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/06 16:53:38 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,63 +53,68 @@ static void	child_process(t_shell *shell, t_cmd *cmd, int in_fd, int out_fd)
 // 	return (0);
 // }
 
-static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
-{
-	int saved_in;
-	int saved_out;
-
-	if (!cmd || cmd->next)
-		return 0;
-	save_stdio1(&saved_in, &saved_out);
-	if (cmd->redirs)
-		apply_redirections(cmd->redirs);
-
-	if (!cmd->argv || !cmd->argv[0])
-	{
-		restore_stdio1(saved_in, saved_out);
-		return 1;
-	}
-	if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
-		|| ft_strncmp(cmd->argv[0], "exit", 5) == 0
-		|| ft_strncmp(cmd->argv[0], "export", 7) == 0
-		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0
-		|| ft_strncmp(cmd->argv[0], "echo", 5) == 0)
-	{
-		g_last_status = exec_builtin(cmd, shell);
-		restore_stdio1(saved_in, saved_out);
-		return 1;
-	}
-	restore_stdio1(saved_in, saved_out);
-	return 0;
-}
-
-// static int handle_parent_builtin(t_shell *shell, t_cmd *cmd)
+// static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
 // {
-// 	// debug_cmd(cmd);
+// 	int saved_in;
+// 	int saved_out;
 
 // 	if (!cmd || cmd->next)
 // 		return 0;
-
-// 	/* 1. Apply redirections first (always) */
+// 	save_stdio1(&saved_in, &saved_out);
 // 	if (cmd->redirs)
 // 		apply_redirections(cmd->redirs);
 
-// 	/* 2. Redirections-only command: valid, nothing to execute */
 // 	if (!cmd->argv || !cmd->argv[0])
+// 	{
+// 		restore_stdio1(saved_in, saved_out);
 // 		return 1;
-
-// 	/* 3. Now it's legal to inspect argv[0] */
+// 	}
 // 	if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
 // 		|| ft_strncmp(cmd->argv[0], "exit", 5) == 0
 // 		|| ft_strncmp(cmd->argv[0], "export", 7) == 0
-// 		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0)
+// 		|| ft_strncmp(cmd->argv[0], "unset", 6) == 0
+// 		|| ft_strncmp(cmd->argv[0], "echo", 5) == 0) // echo
 // 	{
 // 		g_last_status = exec_builtin(cmd, shell);
+// 		restore_stdio1(saved_in, saved_out);
 // 		return 1;
 // 	}
-
+// 	restore_stdio1(saved_in, saved_out);
 // 	return 0;
 // }
+
+
+
+static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
+{
+    int	saved_in;
+    int	saved_out;
+
+    if (!cmd || cmd->next)
+        return (0);
+    if (!cmd->argv || !cmd->argv[0])
+    {
+        save_stdio1(&saved_in, &saved_out);
+        if (cmd->redirs)
+            apply_redirections(cmd->redirs);
+        restore_stdio1(saved_in, saved_out);
+        return (1);
+    }
+    if (ft_strncmp(cmd->argv[0], "cd", 3) == 0
+        || ft_strncmp(cmd->argv[0], "exit", 5) == 0
+        || ft_strncmp(cmd->argv[0], "export", 7) == 0
+        || ft_strncmp(cmd->argv[0], "unset", 6) == 0
+        || ft_strncmp(cmd->argv[0], "echo", 5) == 0)
+    {
+        save_stdio1(&saved_in, &saved_out);
+        if (cmd->redirs)
+            apply_redirections(cmd->redirs);
+        g_last_status = exec_builtin(cmd, shell);
+        restore_stdio1(saved_in, saved_out);
+        return (1);
+    }
+    return (0);
+}
 
 static void	setup_pipe(t_cmd *cmd, int pipefd[2])
 {
@@ -141,32 +146,84 @@ static void	wait_for_children(void)
 	}
 }
 
+// void	execute_pipeline(t_shell *shell, t_cmd *cmds)
+// {
+// 	t_cmd	*cmd;
+// 	int		prev_fd;
+// 	int		pipefd[2];
+// 	pid_t	pid;
+
+// 	// if (prepare_heredocs(shell, cmds) != 0)
+// 	// 	return ;
+
+// 	if (handle_parent_builtin(shell, cmds))
+// 		return ;
+// 	cmd = cmds;
+// 	prev_fd = STDIN_FILENO;
+// 	while (cmd)
+// 	{
+// 		setup_pipe(cmd, pipefd);
+// 		pid = fork();
+// 		if (pid == 0)
+// 			child_process(shell, cmd, prev_fd, pipefd[1]);
+// 		if (pipefd[1] != STDOUT_FILENO)
+// 			close(pipefd[1]);
+// 		if (prev_fd != STDIN_FILENO)
+// 			close(prev_fd);
+// 		prev_fd = pipefd[0];
+// 		cmd = cmd->next;
+// 	}
+// 	wait_for_children();
+// }
+
+// ...existing code...
+
+static void	close_heredoc_fds(t_cmd *cmds)
+{
+    t_cmd	*cmd;
+    t_redir	*redir;
+
+    cmd = cmds;
+    while (cmd)
+    {
+        redir = cmd->redirs;
+        while (redir)
+        {
+            if (redir->type == R_HEREDOC && redir->fd >= 0)
+            {
+                close(redir->fd);
+                redir->fd = -1;
+            }
+            redir = redir->next;
+        }
+        cmd = cmd->next;
+    }
+}
+
 void	execute_pipeline(t_shell *shell, t_cmd *cmds)
 {
-	t_cmd	*cmd;
-	int		prev_fd;
-	int		pipefd[2];
-	pid_t	pid;
+    t_cmd	*cmd;
+    int		prev_fd;
+    int		pipefd[2];
+    pid_t	pid;
 
-	// if (prepare_heredocs(shell, cmds) != 0)
-	// 	return ;
-
-	if (handle_parent_builtin(shell, cmds))
-		return ;
-	cmd = cmds;
-	prev_fd = STDIN_FILENO;
-	while (cmd)
-	{
-		setup_pipe(cmd, pipefd);
-		pid = fork();
-		if (pid == 0)
-			child_process(shell, cmd, prev_fd, pipefd[1]);
-		if (pipefd[1] != STDOUT_FILENO)
-			close(pipefd[1]);
-		if (prev_fd != STDIN_FILENO)
-			close(prev_fd);
-		prev_fd = pipefd[0];
-		cmd = cmd->next;
-	}
-	wait_for_children();
+    if (handle_parent_builtin(shell, cmds))
+        return ;
+    cmd = cmds;
+    prev_fd = STDIN_FILENO;
+    while (cmd)
+    {
+        setup_pipe(cmd, pipefd);
+        pid = fork();
+        if (pid == 0)
+            child_process(shell, cmd, prev_fd, pipefd[1]);
+        if (pipefd[1] != STDOUT_FILENO)
+            close(pipefd[1]);
+        if (prev_fd != STDIN_FILENO)
+            close(prev_fd);
+        prev_fd = pipefd[0];
+        cmd = cmd->next;
+    }
+    close_heredoc_fds(cmds);
+    wait_for_children();
 }

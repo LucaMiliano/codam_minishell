@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 16:17:41 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/06 16:54:08 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <signal.h>
+#include <termios.h>
 
 // static char *expand_variables(t_shell *shell, const char *line)
 // {
@@ -249,9 +250,6 @@ static void	heredoc_child_process(t_shell *shell, int *pipefd, t_redir *redir)
 	exit(0);
 }
 
-
-
-
 static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 {
 	int		status;
@@ -311,20 +309,42 @@ static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 // }
 
 
+// static int	handle_redir_heredoc(t_shell *shell, t_redir *redir)
+// {
+// 	int		pipefd[2];
+// 	pid_t	pid;
+
+// 	if (pipe(pipefd) == -1)
+// 		return (1);
+// 	pid = fork();
+// 	if (pid == -1)
+// 		return (1);
+// 	if (pid == 0)
+// 		heredoc_child_process(shell, pipefd, redir);
+// 	return (heredoc_parent_process(pid, pipefd, redir));
+// }
+
+
 static int	handle_redir_heredoc(t_shell *shell, t_redir *redir)
 {
-	int		pipefd[2];
-	pid_t	pid;
+    int				pipefd[2];
+    pid_t			pid;
+    struct termios	saved_term;
+    int				has_term;
 
-	if (pipe(pipefd) == -1)
-		return (1);
-	pid = fork();
-	if (pid == -1)
-		return (1);
-	if (pid == 0)
-		heredoc_child_process(shell, pipefd, redir);
-	return (heredoc_parent_process(pid, pipefd, redir));
+    if (pipe(pipefd) == -1)
+        return (1);
+    has_term = (tcgetattr(STDIN_FILENO, &saved_term) == 0);
+    pid = fork();
+    if (pid == -1)
+        return (1);
+    if (pid == 0)
+        heredoc_child_process(shell, pipefd, redir);
+    if (has_term)
+        tcsetattr(STDIN_FILENO, TCSANOW, &saved_term);
+    return (heredoc_parent_process(pid, pipefd, redir));
 }
+
 
 int	prepare_heredocs(t_shell *shell, t_cmd *cmds)
 {

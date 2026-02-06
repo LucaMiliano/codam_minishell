@@ -19,3 +19,7 @@ cat << EOF | cat | cat | wc -c telt niet het aantal chars maar doet gwn cat
 - unclosed quotes laten blijven lezen ipv error message. Werkt eigenlijk hetzelfde als heredoc maar dan closing quotes ipv "EOF"
 - na veranderen $USER (export) zou de naam in de prompt NIET moeten veranderen, dat gebeurt nu wel.
 - cat << EOF < onbestaand.txt zou na EOF moeten zeggen dat onbestaand.txt niet bestaat
+
+
+
+check valgrind --trace-children=yes
