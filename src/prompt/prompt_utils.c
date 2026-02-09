@@ -79,13 +79,23 @@ char	*build_prompt(t_prompt *p)
 	char	*tmp2;
 	char	*out;
 
+	if (!p->user || !p->host || !p->cwd)
+		return (NULL);
 	tmp = ft_strjoin(p->user, "@");
+	if (!tmp)
+		return (NULL);
 	tmp2 = ft_strjoin(tmp, p->host);
 	free(tmp);
+	if (!tmp2)
+		return (NULL);
 	tmp = ft_strjoin(tmp2, ":");
 	free(tmp2);
+	if (!tmp)
+		return (NULL);
 	tmp2 = ft_strjoin(tmp, p->cwd);
 	free(tmp);
+	if (!tmp2)
+		return (NULL);
 	out = ft_strjoin(tmp2, "$ ");
 	free(tmp2);
 	return (out);

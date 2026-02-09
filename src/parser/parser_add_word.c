@@ -31,9 +31,14 @@ static t_cmd	*argv_extend(t_cmd *cmd, int cur_count, char *word, int exp)
 	int		i;
 
 	new_argv = malloc(sizeof(char *) * (cur_count + 2));
+	if (!new_argv)
+		return (NULL);
 	new_exp = malloc(sizeof(int) * (cur_count + 1));
 	if (!new_exp)
-		return (free(new_argv), free(new_exp), NULL);
+	{
+		free(new_argv);
+		return (NULL);
+	}
 	i = 0;
 	while (i < cur_count)
 	{
@@ -43,7 +48,11 @@ static t_cmd	*argv_extend(t_cmd *cmd, int cur_count, char *word, int exp)
 	}
 	new_argv[i] = ft_strdup(word);
 	if (!new_argv[i])
-		return (free(new_argv), free(new_exp), NULL);
+	{
+		free(new_argv);
+		free(new_exp);
+		return (NULL);
+	}
 	new_argv[i + 1] = NULL;
 	new_exp[i] = exp;
 	free(cmd->argv);

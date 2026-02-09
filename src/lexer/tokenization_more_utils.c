@@ -76,7 +76,10 @@ t_tokens	*new_token(char *val, int type, int quoted, int exp)
 
 	new = malloc(sizeof(t_tokens));
 	if (!new)
+	{
+		free(val);
 		return (NULL);
+	}
 	new->value = val;
 	new->type = type;
 	new->quoted = quoted;

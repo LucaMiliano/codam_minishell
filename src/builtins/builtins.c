@@ -26,7 +26,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell)
 	if (ft_strncmp(cmd->argv[0], "cd", ft_strlen("cd") + 1) == 0)
 		return (builtin_cd(shell, cmd->argv));
 	if (ft_strncmp(cmd->argv[0], "exit", ft_strlen("exit") + 1) == 0)
-		return (builtin_exit(cmd->argv));
+		return (builtin_exit(shell, cmd->argv));
 	if (ft_strncmp(cmd->argv[0], "export", ft_strlen("export") + 1) == 0)
 		return (builtin_export(shell, cmd->argv));
 	if (ft_strncmp(cmd->argv[0], "unset", ft_strlen("unset") + 1) == 0)

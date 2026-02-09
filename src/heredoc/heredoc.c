@@ -166,6 +166,11 @@
 		while (ft_isalnum(**p) || **p == '_')
 			(*p)++;
 		var = ft_substr(line, start, *p - line - start);
+		if (!var)
+		{
+			free(res);
+			return (NULL);
+		}
 		val = find_in_env(shell, var);
 		old = res;
 		if (val != NULL)
@@ -195,6 +200,8 @@
 				res = append_char(res, *p);
 				p++;
 			}
+			if (!res)
+				return (NULL);
 		}
 		return (res);
 	}
@@ -208,26 +215,19 @@ static int	handle_heredoc(t_shell *shell, t_redir *redir)
 	{
 		line = readline("> ");
 		if (!line)
-		{
-			printf("[DEBUG] EOF non working version detected\n"); //debug
 			break ;
-		}
 		if (ft_strncmp(line, redir->target,
 				ft_strlen(redir->target) + 1) == 0)
 		{
 			free(line);
 			break ;
 		}
-		// if (ft_strlen(line) == ft_strlen(redir->target)
-   		// 	&& ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
-		// {
-		// 	free(line);
-		// 	break;
-		// }
 		if (redir->expandable)
 		{
 			expanded = expand_variables(shell, line);
 			free(line);
+			if (!expanded)
+				return (1);
 			line = expanded;
 		}
 		write(redir->fd, line, ft_strlen(line));
@@ -239,8 +239,6 @@ static int	handle_heredoc(t_shell *shell, t_redir *redir)
 
 static void	heredoc_child_process(t_shell *shell, int *pipefd, t_redir *redir)
 {
-	printf("[HEREDOC CHILD] pid=%d pgrp=%d\n",
-	   getpid(), getpgrp()); // two lines above temp debug
 	setup_signals_heredoc();
 	close(pipefd[0]);
 	redir->fd = pipefd[1];
@@ -256,22 +254,21 @@ static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 
 	close(pipefd[1]);
 	redir->fd = pipefd[0];
-	printf("[PARENT] pid=%d pgrp=%d\n",
-		getpid(), getpgrp()); // two sentences above debug
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	// tcsetpgrp(STDIN_FILENO, getpgrp());
-
-	// setup_signals();
-	setup_signals_prompt(); // replaced with the above, not sure test cat << EOF ctrl-c
+	setup_signals_prompt();
 	if (WIFSIGNALED(status))
 	{
 		g_last_status = 128 + WTERMSIG(status);
+		close(pipefd[0]);
+		redir->fd = -1;
 		return (1);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 	{
 		g_last_status = WEXITSTATUS(status);
+		close(pipefd[0]);
+		redir->fd = -1;
 		return (1);
 	}
 	return (0);

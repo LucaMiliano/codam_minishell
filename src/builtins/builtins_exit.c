@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <readline/history.h>
 
 static int	is_number(const char *str)
 {
@@ -30,24 +31,28 @@ static int	is_number(const char *str)
 	return (1);
 }
 
-int	builtin_exit(char **argv)
+static void	cleanup_and_exit(t_shell *shell, int status)
+{
+	if (shell && shell->env)
+		free_env(shell->env);
+	clear_history();
+	exit(status);
+}
+
+int	builtin_exit(t_shell *shell, char **argv)
 {
 	long	status;
 
-
 	if (isatty(STDIN_FILENO))
-		write(STDOUT_FILENO, "exit\n", 5); // might still need fix (don't know)
+		write(STDOUT_FILENO, "exit\n", 5);
 	if (!argv[1])
-	{
-		exit(g_last_status);
-	}
+		cleanup_and_exit(shell, g_last_status);
 	if (!is_number(argv[1]))
 	{
 		write(STDERR_FILENO, "minishell: exit: ", 18);
 		write(STDERR_FILENO, argv[1], ft_strlen(argv[1]));
 		write(STDERR_FILENO, ": numeric argument required\n", 29);
-		g_last_status = 1;
-		return (1);
+		cleanup_and_exit(shell, 2);
 	}
 	if (argv[2])
 	{
@@ -56,5 +61,6 @@ int	builtin_exit(char **argv)
 		return (1);
 	}
 	status = ft_atol(argv[1]);
-	exit((int)status);
+	cleanup_and_exit(shell, (int)status);
+	return (0);
 }

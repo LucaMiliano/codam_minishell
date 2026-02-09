@@ -39,11 +39,12 @@ int	parse_file_redir(t_tokens **tokens, t_cmd *cmd, t_cmd **head)
 	t_tokens	*file;
 	t_redir		*redir;
 
+	(void)cmd;
 	file = (*tokens)->next;
 	if (!file || file->type != TOK_WORD)
 	{
 		write(2, "minishell: syntax error near redirection\n", 41);
-		free_cmd_pipeline(cmd);
+		free_cmd_pipeline(*head);
 		return (0);
 	}
 	redir = redir_new(redir_type((*tokens)->type),

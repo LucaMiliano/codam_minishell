@@ -27,8 +27,8 @@ void	update_env(t_shell *shell, char *key, char *value)
 	ft_strlcpy(new_var, key, key_len + 1);
 	ft_strlcat(new_var, "=", key_len + 2);
 	ft_strlcat(new_var, value, key_len + 2 + ft_strlen(value));
-	i = -1;
-	while (shell->env[i++])
+	i = 0;
+	while (shell->env[i])
 	{
 		if (ft_strncmp(shell->env[i], key, key_len) == 0
 			&& shell->env[i][key_len] == '=')
@@ -37,6 +37,7 @@ void	update_env(t_shell *shell, char *key, char *value)
 			shell->env[i] = new_var;
 			return ;
 		}
+		i++;
 	}
 	free(new_var);
 }
