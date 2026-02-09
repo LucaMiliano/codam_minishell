@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:20:49 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/06 16:53:38 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/09 17:35:06 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,11 @@ void	execute_pipeline(t_shell *shell, t_cmd *cmds)
         setup_pipe(cmd, pipefd);
         pid = fork();
         if (pid == 0)
+        {
+            if (cmd->next && pipefd[0] != STDIN_FILENO)
+                close(pipefd[0]);
             child_process(shell, cmd, prev_fd, pipefd[1]);
+        }
         if (pipefd[1] != STDOUT_FILENO)
             close(pipefd[1]);
         if (prev_fd != STDIN_FILENO)
@@ -224,6 +228,8 @@ void	execute_pipeline(t_shell *shell, t_cmd *cmds)
         prev_fd = pipefd[0];
         cmd = cmd->next;
     }
+    if (prev_fd != STDIN_FILENO)
+        close(prev_fd);
     close_heredoc_fds(cmds);
     wait_for_children();
 }

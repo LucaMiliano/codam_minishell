@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/09 16:28:01 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/09 17:35:06 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ int	restore_and_return(int saved_stdin, int ret)
 {
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdin);
+	rl_reset_terminal(NULL);
 	return (ret);
 }
