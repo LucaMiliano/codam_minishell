@@ -82,6 +82,8 @@ t_tokens	*tokenize(char *prompt)
     {
         while (is_space(full_input[i]))
             i++;
+        if (!full_input[i])
+            break;
         if (is_operator(full_input[i]))
             handle_operator(full_input, &i, &tokens);
         else
