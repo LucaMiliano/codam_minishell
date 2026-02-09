@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 15:47:25 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/09 16:36:21 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,12 @@ char		*ft_strjoin_multiple(const char *first, ...);
 //   signals   //
 /////////////////
 // signals.c
-void		setup_signals(void);
+void	setup_signals_exec(void);
+void	setup_signals_child(void);
+void	setup_signals_prompt(void);
+// void		setup_signals(void);
 void		sigint_handler(int sig);
-void		setup_signals_child(void);
+// void		setup_signals_child(void);
 // signals_heredoc.c
 // void		sigint_handler_heredoc(int sig);
 void		setup_signals_heredoc(void);

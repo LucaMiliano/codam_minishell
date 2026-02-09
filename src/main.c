@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:03:37 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/05 13:36:35 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/09 16:38:43 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int main(int ac, char **av, char **envp)
 	shell.env = dup_envp(envp);
 	g_last_status = 0;
 
-	setup_signals();	// install SIGINT/SIGQUIT
+	// setup_signals();	// install SIGINT/SIGQUIT
+	setup_signals_prompt(); // new signal call same as above but different
 	//  needs understanding code :disable_echoctl();  // makes sure we don't have gosting prompt behavior(not strictly wrong more clean)
 	while (1)
 	{

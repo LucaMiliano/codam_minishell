@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/06 16:54:08 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/09 16:39:52 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,8 @@ static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 	waitpid(pid, &status, 0);
 	// tcsetpgrp(STDIN_FILENO, getpgrp());
 
-	setup_signals();
+	// setup_signals();
+	setup_signals_prompt(); // replaced with the above, not sure test cat << EOF ctrl-c
 	if (WIFSIGNALED(status))
 	{
 		g_last_status = 128 + WTERMSIG(status);

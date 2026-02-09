@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 09:58:43 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/09 16:26:46 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	prompt(t_shell *shell)
 	ft_bzero(&p, sizeof(t_prompt));
 	ctx.is_tty = isatty(STDIN_FILENO);
 	ctx.saved_stdin = dup(STDIN_FILENO);
+	/* Line added underneath */
+	setup_signals_prompt();
 	if (build_prompt1(shell, &p, ctx.is_tty) == 0)
 		return (0);
 	line = get_prompt_line(&p, ctx.is_tty);

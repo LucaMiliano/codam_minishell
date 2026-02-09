@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 15:25:46 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/09 16:28:01 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int	execute_and_cleanup(
 		return (restore_and_return(ctx->saved_stdin, 1));
 	}
 	expand_pipeline(cmds, shell);
+	/* Line added */
+	setup_signals_exec();
 	execute_pipeline(shell, cmds);
 	free_cmd_pipeline(cmds);
 	free(ctx->line);
