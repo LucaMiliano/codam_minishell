@@ -107,10 +107,14 @@ static int	handle_parent_builtin(t_shell *shell, t_cmd *cmd)
         || ft_strncmp(cmd->argv[0], "echo", 5) == 0)
     {
         save_stdio1(&saved_in, &saved_out);
+        shell->saved_stdio_in = saved_in;
+        shell->saved_stdio_out = saved_out;
         if (cmd->redirs)
             apply_redirections(cmd->redirs);
         g_last_status = exec_builtin(cmd, shell);
         restore_stdio1(saved_in, saved_out);
+        shell->saved_stdio_in = -1;
+        shell->saved_stdio_out = -1;
         return (1);
     }
     return (0);

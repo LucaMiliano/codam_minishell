@@ -40,8 +40,15 @@
 
 typedef struct s_shell
 {
-	char **env;
-	int last_status;
+	char		**env;
+	int			last_status;
+	int			saved_stdin;
+	int			saved_stdio_in;
+	int			saved_stdio_out;
+	char		*cur_line;
+	void		*cur_cmds;
+	void		*cur_prompt;
+	int			cur_is_tty;
 }	t_shell;
 
 extern int g_last_status;

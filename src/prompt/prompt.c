@@ -51,6 +51,11 @@ int	prompt(t_shell *shell)
 	ft_bzero(&p, sizeof(t_prompt));
 	ctx.is_tty = isatty(STDIN_FILENO);
 	ctx.saved_stdin = dup(STDIN_FILENO);
+	shell->saved_stdin = ctx.saved_stdin;
+	shell->cur_prompt = &p;
+	shell->cur_is_tty = ctx.is_tty;
+	shell->cur_line = NULL;
+	shell->cur_cmds = NULL;
 	/* Line added underneath */
 	setup_signals_prompt();
 	if (build_prompt1(shell, &p, ctx.is_tty) == 0)
@@ -63,6 +68,8 @@ int	prompt(t_shell *shell)
 	cmds = create_cmds(line, &p, ctx.is_tty);
 	if (!cmds)
 		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1));
+	shell->cur_line = line;
+	shell->cur_cmds = cmds;
 	ctx.p = &p;
 	ctx.line = line;
 	return (execute_and_cleanup(shell, cmds, &ctx));

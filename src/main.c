@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:03:37 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/09 16:38:43 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/10 14:29:54 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <stdio.h> //debug
+#include <readline/history.h>
 
 // int add_history PARAMS(const char *);
 
@@ -56,9 +57,14 @@ int main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	// shell->env = dup_envp(envp);
-    // g_last_status = 0; step 1;
 	shell.env = dup_envp(envp);
+	shell.saved_stdin = -1;
+	shell.saved_stdio_in = -1;
+	shell.saved_stdio_out = -1;
+	shell.cur_line = NULL;
+	shell.cur_cmds = NULL;
+	shell.cur_prompt = NULL;
+	shell.cur_is_tty = 0;
 	g_last_status = 0;
 
 	// setup_signals();	// install SIGINT/SIGQUIT
@@ -78,7 +84,8 @@ int main(int ac, char **av, char **envp)
 	}
 	}
 	// promt() -> promt(&shell); and free_env(shell.env) added/changed step 1
-	free_env(shell.env); //***temorary shotdown to check segfault****
+	free_env(shell.env);
+	clear_history();
 	return (0);
 }
 

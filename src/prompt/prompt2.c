@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.codam.nl>           +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/09 17:35:06 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/10 14:28:03 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int	execute_and_cleanup(
 {
 	if (prepare_heredocs(shell, cmds) != 0)
 	{
+		shell->cur_cmds = NULL;
+		shell->cur_line = NULL;
+		shell->cur_prompt = NULL;
+		shell->saved_stdin = -1;
 		free_cmd_pipeline(cmds);
 		free(ctx->line);
 		if (ctx->is_tty)
@@ -118,9 +122,12 @@ int	execute_and_cleanup(
 		return (restore_and_return(ctx->saved_stdin, 1));
 	}
 	expand_pipeline(cmds, shell);
-	/* Line added */
 	setup_signals_exec();
 	execute_pipeline(shell, cmds);
+	shell->cur_cmds = NULL;
+	shell->cur_line = NULL;
+	shell->cur_prompt = NULL;
+	shell->saved_stdin = -1;
 	free_cmd_pipeline(cmds);
 	free(ctx->line);
 	if (ctx->is_tty)
