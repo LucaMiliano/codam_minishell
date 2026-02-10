@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/10 17:44:53 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/10 17:55:04 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,6 @@ static int	handle_input(char *line)
 	if (builtin_history(line))
 		return (2);
 	return (1);
-}
-
-int	builtin_history(char *line)
-{
-	if (!ft_strncmp(line, "history -c", 10))
-	{
-		clear_history();
-		write(1, "history cleared\n", 17);
-		return (1);
-	}
-	return (0);
 }
 
 static int	prompt_init(t_shell *shell, t_prompt *p, t_prompt_ctx *ctx)

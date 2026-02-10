@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/10 17:40:52 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/10 17:59:39 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,6 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-int	has_unclosed_quotes(char *str)
-{
-	int		i;
-	char	quote;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-		{
-			quote = str[i];
-			i++;
-			while (str[i] && str[i] != quote)
-				i++;
-			if (!str[i])
-				return (1);
-			i++;
-		}
-		else
-			i++;
-	}
-	return (0);
-}
 
 char	*read_from_stdin(void)
 {
@@ -54,40 +30,45 @@ char	*read_from_stdin(void)
 	return (ft_strdup(buf));
 }
 
+static char	*read_quotes(char *line)
+{
+	char	*continuation;
+	char	*temp;
+
+	while (has_unclosed_quotes(line))
+	{
+		continuation = readline("> ");
+		if (!continuation)
+		{
+			free(line);
+			return (NULL);
+		}
+		temp = line;
+		line = ft_strjoin(line, "\n");
+		free(temp);
+		if (!line)
+			return (NULL);
+		temp = line;
+		line = ft_strjoin(line, continuation);
+		free(temp);
+		free(continuation);
+		if (!line)
+			return (NULL);
+	}
+	return (line);
+}
+
 char	*get_prompt_line(t_prompt *p, int is_tty)
 {
 	char	*line;
-	char	*continuation;
-	char	*temp;
 
 	if (is_tty)
 	{
 		line = readline(p->prompt_str);
 		if (!line)
 			return (NULL);
-		while (has_unclosed_quotes(line))
-		{
-			continuation = readline("> ");
-			if (!continuation)
-			{
-				free(line);
-				return (NULL);
-			}
-			temp = line;
-			line = ft_strjoin(line, "\n");
-			free(temp);
-			if (!line)
-				return (NULL);
-			temp = line;
-			line = ft_strjoin(line, continuation);
-			free(temp);
-			free(continuation);
-			if (!line)
-				return (NULL);
-		}
-		return (line);
+		return (read_quotes(line));
 	}
-
 	return (read_from_stdin());
 }
 
@@ -133,15 +114,4 @@ int	execute_and_cleanup(
 	if (ctx->is_tty)
 		free_prompt(ctx->p);
 	return (restore_and_return(ctx->saved_stdin, 1));
-}
-
-int restore_and_return(int saved_stdin, int ret)
-{
-	if (saved_stdin >= 0)
-	{
-		dup2(saved_stdin, STDIN_FILENO);
-		close(saved_stdin);
-	}
-	rl_reset_terminal(NULL);
-	return (ret);
 }
