@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/09 16:26:46 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/10 17:44:53 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,22 @@ int	builtin_history(char *line)
 	return (0);
 }
 
+static int	prompt_init(t_shell *shell, t_prompt *p, t_prompt_ctx *ctx)
+{
+	ft_bzero(p, sizeof(t_prompt));
+	ctx->is_tty = isatty(STDIN_FILENO);
+	ctx->saved_stdin = dup(STDIN_FILENO);
+	if (ctx->saved_stdin < 0)
+		return (1);
+	shell->saved_stdin = ctx->saved_stdin;
+	shell->cur_prompt = p;
+	shell->cur_is_tty = ctx->is_tty;
+	shell->cur_line = NULL;
+	shell->cur_cmds = NULL;
+	setup_signals_prompt();
+	return (0);
+}
+
 int	prompt(t_shell *shell)
 {
 	t_prompt		p;
@@ -48,18 +64,10 @@ int	prompt(t_shell *shell)
 	char			*line;
 	t_cmd			*cmds;
 
-	ft_bzero(&p, sizeof(t_prompt));
-	ctx.is_tty = isatty(STDIN_FILENO);
-	ctx.saved_stdin = dup(STDIN_FILENO);
-	shell->saved_stdin = ctx.saved_stdin;
-	shell->cur_prompt = &p;
-	shell->cur_is_tty = ctx.is_tty;
-	shell->cur_line = NULL;
-	shell->cur_cmds = NULL;
-	/* Line added underneath */
-	setup_signals_prompt();
+	if (prompt_init(shell, &p, &ctx))
+		return (1);
 	if (build_prompt1(shell, &p, ctx.is_tty) == 0)
-		return (0);
+		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0));
 	line = get_prompt_line(&p, ctx.is_tty);
 	if (!line)
 		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0));
