@@ -60,8 +60,6 @@ SRCS		:=	main.c \
 				builtins/builtins_unset.c \
 				free/free_functions1.c \
 				free/free_functions2.c \
-				debugfolder/debug_tokens.c \
-				debugfolder/debug_parser.c
 
 
 SRC_FILES	:= $(addprefix $(SRC_DIR)/,$(SRCS))

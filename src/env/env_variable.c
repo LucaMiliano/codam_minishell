@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   env_variable.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:31:10 by lpieck            #+#    #+#             */
-/*   Updated: 2026/01/25 19:18:30 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:09:38 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*create_new_var(char *key, char *value)
+{
+	char	*new_var;
+	size_t	key_len;
+
+	key_len = ft_strlen(key);
+	new_var = malloc(key_len + 1 + ft_strlen(value) + 1);
+	if (!new_var)
+		return (NULL);
+	ft_strlcpy(new_var, key, key_len + 1);
+	ft_strlcat(new_var, "=", key_len + 2);
+	ft_strlcat(new_var, value, key_len + 2 + ft_strlen(value));
+	return (new_var);
+}
 
 void	update_env(t_shell *shell, char *key, char *value)
 {
@@ -21,12 +36,9 @@ void	update_env(t_shell *shell, char *key, char *value)
 	if (!key || !value || !shell->env)
 		return ;
 	key_len = ft_strlen(key);
-	new_var = malloc(key_len + 1 + ft_strlen(value) + 1);
+	new_var = create_new_var(key, value);
 	if (!new_var)
 		return ;
-	ft_strlcpy(new_var, key, key_len + 1);
-	ft_strlcat(new_var, "=", key_len + 2);
-	ft_strlcat(new_var, value, key_len + 2 + ft_strlen(value));
 	i = 0;
 	while (shell->env[i])
 	{
@@ -42,7 +54,7 @@ void	update_env(t_shell *shell, char *key, char *value)
 	free(new_var);
 }
 
-char	*find_in_env(t_shell *shell, const char *name) //changed t_shell *shell added;
+char	*find_in_env(t_shell *shell, const char *name)
 {
 	int		i;
 	size_t	len;
@@ -52,7 +64,7 @@ char	*find_in_env(t_shell *shell, const char *name) //changed t_shell *shell add
 		return (NULL);
 	if (!shell || !shell->env)
 	{
-		write(2, "error find_in_env\n", 19); // debug line
+		write(2, "error find_in_env\n", 19);
 		return (NULL);
 	}
 	env = shell->env;

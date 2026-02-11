@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/10 17:47:24 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:20:15 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,7 @@ typedef struct s_cmd
 //    promt     //
 //////////////////
 // prompt
-// char		*prompt(void);
-// int			prompt(t_shell *shell);
+
 int		prompt(t_shell *shell);
 int		build_prompt1(t_shell *shell, t_prompt *p, int is_tty);
 char	*get_prompt_line(t_prompt *p, int is_tty);
@@ -246,7 +245,7 @@ void		execute_pipeline(t_shell *shell, t_cmd *cmds);
 // exec_utils.c
 // void		exec_absolute_or_relative(t_cmd *cmd);
 void		exec_absolute_or_relative(t_shell *shell, t_cmd *cmd);
-int			is_builtin(char *cmd);
+
 // both for fd issue does live in exec_utils.c
 void	save_stdio1(int *saved_stdin, int *saved_stdout);
 void	restore_stdio1(int saved_stdin, int saved_stdout);
@@ -305,5 +304,6 @@ void		free_split(char **arr);
 int			prompt_exit(t_prompt *p, int is_tty, int saved_stdin, int ret);
 void		free_env(char **env);
 void		free2_prompt(t_prompt *p);
+int	is_builtin(char *cmd);
 
 #endif
