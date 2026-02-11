@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/11 20:32:15 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 20:42:50 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,44 +108,3 @@ int	prompt(t_shell *shell)
 	ctx.line = line;
 	return (execute_and_cleanup(shell, cmds, &ctx));
 }
-// int	prompt(t_shell *shell)
-// {
-// 	t_prompt		p;
-// 	t_prompt_ctx	ctx;
-// 	char			*line;
-// 	t_cmd			*cmds;
-
-// 	if (prompt_init(shell, &p, &ctx))
-// 		return (1);
-// 	if (build_prompt1(shell, &p, ctx.is_tty) == 0)
-// 		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0));
-// 	line = get_prompt_line(&p, ctx.is_tty);
-// 	if (!line)
-// 	{
-// 		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0);
-// 		shell->saved_stdin = -1;
-// 		shell->cur_prompt = NULL;
-// 		return (0);
-// 	}
-// 	if (handle_line(line, &p, ctx.is_tty) != 1)
-// 	{
-// 		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1);
-// 		shell->saved_stdin = -1;
-// 		shell->cur_prompt = NULL;
-// 		return (1);
-// 	}
-// 	cmds = create_cmds(line, &p, ctx.is_tty);
-// 	if (!cmds)
-// 	{
-// 		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1);
-// 		shell->saved_stdin = -1;
-// 		shell->cur_prompt = NULL;
-// 		free(line);
-// 		return (1);
-// 	}
-// 	shell->cur_line = line;
-// 	shell->cur_cmds = cmds;
-// 	ctx.p = &p;
-// 	ctx.line = line;
-// 	return (execute_and_cleanup(shell, cmds, &ctx));
-// }
