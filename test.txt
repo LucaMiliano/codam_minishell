@@ -1,28 +1,0 @@
-[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004h^C[?2004l
-[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m[?2004hhashdalksdkjkkkkkdkdkdkdkdkokns;idhfhfohdsfoihsodhfosidhhoihiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0midjs
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0md
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0mds
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0mds
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0md
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0msd
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m
-[?2004l[?2004h[1;32mlpieck[0m@[1;36mf1r2s6.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0m^Z[?2004l

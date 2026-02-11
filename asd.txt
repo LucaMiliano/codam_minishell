@@ -1,17 +1,0 @@
-[?2004h[1;32mlpieck[0m@[1;36mf1r2s19.codam.nl[0m [1;33m~/Desktop/milestone_3/homework/minishell[0m [1;31m$ [0mn
-[?2004lude
-libft
-Makefile
-minishell
-n
-nice
-obj
-out.txt
-patchnotes.md
-readme_bash.md
-readme.md
-src
-test.txt
-usable_functions.md
-werktdit.txt
-xyz.txt
