@@ -48,6 +48,7 @@ SRCS		:=	main.c \
 				exec/exec_pipeline.c \
 				exec/exec_utils.c \
 				heredoc/heredoc.c \
+				heredoc/heredoc2.c \
 				env/env_variable.c \
 				redirections/redirections.c \
 				builtins/builtins_echo.c \

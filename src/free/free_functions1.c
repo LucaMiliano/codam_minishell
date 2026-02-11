@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 01:40:20 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/11 17:33:02 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:39:26 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,16 @@ void	free_split(char **arr)
 
 void	free_env(char **env)
 {
+	int	i;
+
 	if (env)
 	{
-		for (int i = 0; env[i] != NULL; i++)
+		i = 0;
+		while (env[i] != NULL)
+		{
 			free(env[i]);
+			i++;
+		}
 		free(env);
 	}
 }

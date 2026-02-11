@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 13:52:29 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/05 15:14:35 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:41:13 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ char	*check_for_quotes(char *str, int *quoted, int *i, int *expand)
 	while (str[*i] && str[*i] != quote)
 		(*i)++;
 	if (!str[*i])
-	{
-		// write(2, "minishell: syntax error: unclosed quote\n", 40);
 		return (NULL);
-	}
 	(*i)++;
 	return (str);
 }

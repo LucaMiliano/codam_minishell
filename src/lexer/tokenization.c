@@ -6,32 +6,11 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 14:19:09 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/05 15:19:17 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:41:23 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// t_tokens	*tokenize(char *prompt)
-// {
-// 	int			i;
-// 	t_tokens	*tokens;
-
-// 	i = 0;
-// 	tokens = NULL;
-// 	if (!prompt)
-// 		return (NULL);
-// 	while (prompt[i])
-// 	{
-// 		while (is_space(prompt[i]))
-// 			i++;
-// 		if (is_operator(prompt[i]))
-// 			handle_operator(prompt, &i, &tokens);
-// 		else
-// 			handle_word(prompt, &i, &tokens);
-// 	}
-// 	return (tokens);
-// }
 
 void	handle_operator(char *str, int *i, t_tokens **list)
 {
