@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
 static void	free_argv(char **argv)
 {
@@ -32,6 +33,8 @@ static void	free_redirs(t_redir *r)
 	while (r)
 	{
 		next_r = r->next;
+		if (r->type == R_HEREDOC && r->fd >= 0)
+			close(r->fd);
 		if (r->target)
 			free(r->target);
 		free(r);

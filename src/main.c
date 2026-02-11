@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include <stdlib.h>
 #include <stdio.h> //debug
+#include <unistd.h>
 #include <readline/history.h>
 
 // int add_history PARAMS(const char *);
@@ -84,9 +85,21 @@ int main(int ac, char **av, char **envp)
 	}
 	}
 	// promt() -> promt(&shell); and free_env(shell.env) added/changed step 1
+	if (shell.cur_cmds)
+		free_cmd_pipeline((t_cmd *)shell.cur_cmds);
+	if (shell.cur_line)
+		free(shell.cur_line);
+	if (shell.cur_is_tty && shell.cur_prompt)
+		free_prompt((t_prompt *)shell.cur_prompt);
+	if (shell.saved_stdio_in >= 0)
+		close(shell.saved_stdio_in);
+	if (shell.saved_stdio_out >= 0)
+		close(shell.saved_stdio_out);
+	if (shell.saved_stdin >= 0)
+		close(shell.saved_stdin);
 	free_env(shell.env);
 	clear_history();
-	return (0);
+	return (g_last_status);
 }
 
 // #include <termios.h>

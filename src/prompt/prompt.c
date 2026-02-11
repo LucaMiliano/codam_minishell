@@ -62,12 +62,28 @@ int	prompt(t_shell *shell)
 		return (0);
 	line = get_prompt_line(&p, ctx.is_tty);
 	if (!line)
-		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0));
+	{
+		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0);
+		shell->saved_stdin = -1;
+		shell->cur_prompt = NULL;
+		return (0);
+	}
 	if (handle_line(line, &p, ctx.is_tty) != 1)
-		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1));
+	{
+		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1);
+		shell->saved_stdin = -1;
+		shell->cur_prompt = NULL;
+		return (1);
+	}
 	cmds = create_cmds(line, &p, ctx.is_tty);
 	if (!cmds)
-		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1));
+	{
+		prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 1);
+		shell->saved_stdin = -1;
+		shell->cur_prompt = NULL;
+		free(line);
+		return (1);
+	}
 	shell->cur_line = line;
 	shell->cur_cmds = cmds;
 	ctx.p = &p;
