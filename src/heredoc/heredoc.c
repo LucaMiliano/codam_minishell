@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/10 16:14:09 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 14:43:20 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,11 @@ static int	handle_heredoc(t_shell *shell, t_redir *redir)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			if (g_last_status == 130)
+				return (1);
 			break ;
+		}
 		if (ft_strncmp(line, redir->target,
 				ft_strlen(redir->target) + 1) == 0)
 		{
@@ -239,17 +243,15 @@ static int	handle_heredoc(t_shell *shell, t_redir *redir)
 
 static void	heredoc_child_process(t_shell *shell, int *pipefd, t_redir *redir)
 {
+	if (shell->saved_stdin >= 0)
+		close(shell->saved_stdin);
 	setup_signals_heredoc();
 	close(pipefd[0]);
 	redir->fd = pipefd[1];
-	// if (handle_heredoc(shell, redir) != 0)
-	// 	exit(1);
-	// close(pipefd[1]);
-	// exit(0);
 	if (handle_heredoc(shell, redir) != 0)
 	{
 		close(pipefd[1]);
-		exit(1);
+		exit(g_last_status);
 	}
 	close(pipefd[1]);
 	exit(0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_functions1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 01:40:20 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/10 16:31:57 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 14:31:47 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ int prompt_exit(t_prompt *p, int is_tty, int saved_stdin, int ret)
 		close(saved_stdin);
 	}
 	if (is_tty)
-		free_prompt(p);
+		free2_prompt(p);
 	return (ret);
 }

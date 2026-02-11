@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_heredoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:48:51 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 16:01:20 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 14:43:22 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 static void	sigint_heredoc(int sig)
 {
 	(void)sig;
+	g_last_status = 130;
 	write(1, "\n", 1);
-	exit(130);
+	close(STDIN_FILENO);
 }
 
 void	setup_signals_heredoc(void)
