@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 17:36:06 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/11 17:36:19 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:47:27 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*expand_variables(t_shell *shell, const char *line)
 	return (res);
 }
 
-static int	handle_heredoc(t_shell *shell, t_redir *redir)
+int	handle_heredoc(t_shell *shell, t_redir *redir)
 {
 	char	*line;
 	char	*expanded;

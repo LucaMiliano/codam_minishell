@@ -6,7 +6,7 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/11 17:35:57 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 17:45:47 by lpieck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	heredoc_child_process(t_shell *shell, int *pipefd, t_redir *redir)
 
 static int	heredoc_parent_process(pid_t pid, int *pipefd, t_redir *redir)
 {
-	int status;
+	int	status;
 
 	close(pipefd[1]);
 	redir->fd = pipefd[0];
