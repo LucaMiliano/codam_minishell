@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 22:32:31 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/05 08:59:31 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 19:55:11 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_cmd_pipeline(t_cmd *cmd)
 	}
 }
 
-void free2_prompt(t_prompt *p)
+void	free2_prompt(t_prompt *p)
 {
 	if (p->prompt_str)
 	{
@@ -82,4 +82,3 @@ void free2_prompt(t_prompt *p)
 		p->host = NULL;
 	}
 }
-

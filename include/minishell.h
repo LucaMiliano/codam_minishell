@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 18:30:58 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/11 17:57:04 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 20:35:47 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,16 @@ char			*append_expanded_var(char *result,
 void			exec_cmd(t_shell *shell, t_cmd *cmd, int in_fd, int out_fd);
 void			exec_from_path(t_shell *shell, t_cmd *cmd);
 void			execute_pipeline(t_shell *shell, t_cmd *cmds);
+void			save_and_redirect1(t_shell *shell, t_cmd *cmd,\
+				int *saved_in, int *saved_out);
+void			restore_and_reset1(t_shell *shell, int saved_in, int saved_out);
+int				handle_parent_builtin(t_shell *shell, t_cmd *cmd);
+void			close_heredoc_fds(t_cmd *cmds);
+void			pipe_loop(t_shell *shell, t_cmd *cmd, int prev_fd);
+void			setup_pipe(t_cmd *cmd, int pipefd[2]);
+void			handle_child(t_shell *shell, t_cmd *cmd,\
+				int prev_fd, int write_fd);
+int				handle_input(char *line);
 void			exec_absolute_or_relative(t_shell *shell, t_cmd *cmd);
 void			save_stdio1(int *saved_stdin, int *saved_stdout);
 void			restore_stdio1(int saved_stdin, int saved_stdout);

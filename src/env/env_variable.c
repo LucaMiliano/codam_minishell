@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_variable.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 15:31:10 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/11 17:09:38 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 19:21:38 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,49 +80,6 @@ char	*find_in_env(t_shell *shell, const char *name)
 		i++;
 	}
 	return (NULL);
-}
-
-char	*join_path(char *dir, char *cmd)
-{
-	size_t	len;
-	char	*res;
-
-	len = ft_strlen(dir) + ft_strlen(cmd) + 2;
-	res = malloc(len);
-	if (!res)
-		return (NULL);
-	ft_strlcpy(res, dir, len);
-	ft_strlcat(res, "/", len);
-	ft_strlcat(res, cmd, len);
-	return (res);
-}
-
-void	add_env_var(t_shell *shell, char *key, char *value)
-{
-	int		i;
-	char	**new_env;
-	char	*new_var;
-
-	i = 0;
-	while (shell->env && shell->env[i])
-		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
-	if (!new_env)
-		return ;
-	i = 0;
-	while (shell->env && shell->env[i])
-	{
-		new_env[i] = shell->env[i];
-		i++;
-	}
-	if (value)
-		new_var = ft_strjoin_multiple(key, "=", value, NULL);
-	else
-		new_var = ft_strdup(key);
-	new_env[i++] = new_var;
-	new_env[i] = NULL;
-	free(shell->env);
-	shell->env = new_env;
 }
 
 void	remove_env_var(t_shell *shell, char *key)

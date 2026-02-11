@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 15:25:40 by cpinas            #+#    #+#             */
-/*   Updated: 2026/02/11 17:45:47 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 19:55:26 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static int	handle_redir_heredoc(t_shell *shell, t_redir *redir)
 		tcsetattr(STDIN_FILENO, TCSANOW, &saved_term);
 	return (heredoc_parent_process(pid, pipefd, redir));
 }
-
 
 int	prepare_heredocs(t_shell *shell, t_cmd *cmds)
 {

@@ -6,7 +6,7 @@
 /*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 03:16:12 by cpinas            #+#    #+#             */
-/*   Updated: 2026/01/12 01:04:15 by cpinas           ###   ########.fr       */
+/*   Updated: 2026/02/11 20:24:12 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,52 @@ static int	argv_count(t_cmd *cmd)
 	return (count);
 }
 
-static t_cmd	*argv_extend(t_cmd *cmd, int cur_count, char *word, int exp)
+static int	alloc_argv_arrays(char ***new_argv, int **new_exp, int size)
 {
-	char	**new_argv;
-	int		*new_exp;
-	int		i;
-
-	new_argv = malloc(sizeof(char *) * (cur_count + 2));
-	if (!new_argv)
-		return (NULL);
-	new_exp = malloc(sizeof(int) * (cur_count + 1));
-	if (!new_exp)
+	*new_argv = malloc(sizeof(char *) * (size + 1));
+	if (!*new_argv)
+		return (0);
+	*new_exp = malloc(sizeof(int) * size);
+	if (!*new_exp)
 	{
-		free(new_argv);
-		return (NULL);
+		free(*new_argv);
+		return (0);
 	}
+	return (1);
+}
+
+static void	copy_existing_args(t_cmd *cmd, char **new_argv,
+								int *new_exp, int count)
+{
+	int	i;
+
 	i = 0;
-	while (i < cur_count)
+	while (i < count)
 	{
 		new_argv[i] = cmd->argv[i];
 		new_exp[i] = cmd->argv_expandable[i];
 		i++;
 	}
-	new_argv[i] = ft_strdup(word);
-	if (!new_argv[i])
+}
+
+static t_cmd	*argv_extend(t_cmd *cmd, int cur_count,
+							char *word, int exp)
+{
+	char	**new_argv;
+	int		*new_exp;
+
+	if (!alloc_argv_arrays(&new_argv, &new_exp, cur_count + 1))
+		return (NULL);
+	copy_existing_args(cmd, new_argv, new_exp, cur_count);
+	new_argv[cur_count] = ft_strdup(word);
+	if (!new_argv[cur_count])
 	{
 		free(new_argv);
 		free(new_exp);
 		return (NULL);
 	}
-	new_argv[i + 1] = NULL;
-	new_exp[i] = exp;
+	new_argv[cur_count + 1] = NULL;
+	new_exp[cur_count] = exp;
 	free(cmd->argv);
 	free(cmd->argv_expandable);
 	cmd->argv = new_argv;

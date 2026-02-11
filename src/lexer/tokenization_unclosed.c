@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_unclosed.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/05 15:17:15 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/11 17:56:20 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 20:04:56 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,42 @@ char	*get_continuation_line(void)
 	return (line);
 }
 
+static char	*append_with_newline(char *current, char *continuation)
+{
+	char	*temp;
+
+	temp = current;
+	current = ft_strjoin(current, "\n");
+	free(temp);
+	if (!current)
+		return (NULL);
+	temp = current;
+	current = ft_strjoin(current, continuation);
+	free(temp);
+	if (!current)
+		return (NULL);
+	return (current);
+}
+
 char	*read_until_quote_closed(char *initial_line)
 {
 	char	*current;
 	char	*continuation;
-	char	*temp;
 
 	current = ft_strdup(initial_line);
 	if (!current)
 		return (NULL);
-
 	while (has_unclosed_quotes(current))
 	{
 		continuation = get_continuation_line();
 		if (!continuation)
 		{
-			write(2, "minishell: unexpected EOF while reading quoted string\n", 54);
+			write(2, "minishell: unexpected EOF while\
+				 		reading quoted string\n", 54);
 			free(current);
 			return (NULL);
 		}
-		temp = current;
-		current = ft_strjoin(current, "\n");
-		free(temp);
-		if (!current)
-			return (NULL);
-		temp = current;
-		current = ft_strjoin(current, continuation);
-		free(temp);
+		current = append_with_newline(current, continuation);
 		free(continuation);
 		if (!current)
 			return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cpinas <cpinas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 17:36:06 by lpieck            #+#    #+#             */
-/*   Updated: 2026/02/11 17:47:27 by lpieck           ###   ########.fr       */
+/*   Updated: 2026/02/11 19:59:28 by cpinas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,34 @@ static char	*expand_variables(t_shell *shell, const char *line)
 	return (res);
 }
 
+static int	process_heredoc_line(t_shell *shell, t_redir *redir, char *line)
+{
+	char	*expanded;
+
+	if (ft_strncmp(line, redir->target,
+			ft_strlen(redir->target) + 1) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	if (redir->expandable)
+	{
+		expanded = expand_variables(shell, line);
+		free(line);
+		if (!expanded)
+			return (-1);
+		line = expanded;
+	}
+	write(redir->fd, line, ft_strlen(line));
+	write(redir->fd, "\n", 1);
+	free(line);
+	return (0);
+}
+
 int	handle_heredoc(t_shell *shell, t_redir *redir)
 {
 	char	*line;
-	char	*expanded;
+	int		ret;
 
 	while (1)
 	{
@@ -84,23 +108,11 @@ int	handle_heredoc(t_shell *shell, t_redir *redir)
 				return (1);
 			break ;
 		}
-		if (ft_strncmp(line, redir->target,
-				ft_strlen(redir->target) + 1) == 0)
-		{
-			free(line);
+		ret = process_heredoc_line(shell, redir, line);
+		if (ret == 1)
 			break ;
-		}
-		if (redir->expandable)
-		{
-			expanded = expand_variables(shell, line);
-			free(line);
-			if (!expanded)
-				return (1);
-			line = expanded;
-		}
-		write(redir->fd, line, ft_strlen(line));
-		write(redir->fd, "\n", 1);
-		free(line);
+		if (ret == -1)
+			return (1);
 	}
 	return (0);
 }

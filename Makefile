@@ -26,6 +26,7 @@ SRCS		:=	main.c \
 				prompt/prompt.c \
 				prompt/prompt2.c \
 				prompt/prompt3.c \
+				prompt/prompt4.c \
 				prompt/prompt_colors.c \
 				prompt/prompt_utils.c \
 				signals/signals.c \
@@ -46,10 +47,12 @@ SRCS		:=	main.c \
 				builtins/builtins.c \
 				exec/exec_cmd.c \
 				exec/exec_pipeline.c \
+				exec/exec_pipeline2.c \
 				exec/exec_utils.c \
 				heredoc/heredoc.c \
 				heredoc/heredoc2.c \
 				env/env_variable.c \
+				env/env_variable2.c \
 				redirections/redirections.c \
 				builtins/builtins_echo.c \
 				builtins/builtins_cd_utils.c \
