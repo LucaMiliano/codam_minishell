@@ -6,7 +6,11 @@
 /*   By: lpieck <lpieck@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:37:58 by cpinas            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2026/02/10 17:47:26 by lpieck           ###   ########.fr       */
+=======
+/*   Updated: 2026/02/10 17:55:04 by cpinas           ###   ########.fr       */
+>>>>>>> e4137dab9b36cb2c58898905bc78362c0420cd5b
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +34,19 @@ static int	handle_input(char *line)
 	return (1);
 }
 
-int	builtin_history(char *line)
+static int	prompt_init(t_shell *shell, t_prompt *p, t_prompt_ctx *ctx)
 {
-	if (!ft_strncmp(line, "history -c", 10))
-	{
-		clear_history();
-		write(1, "history cleared\n", 17);
+	ft_bzero(p, sizeof(t_prompt));
+	ctx->is_tty = isatty(STDIN_FILENO);
+	ctx->saved_stdin = dup(STDIN_FILENO);
+	if (ctx->saved_stdin < 0)
 		return (1);
-	}
+	shell->saved_stdin = ctx->saved_stdin;
+	shell->cur_prompt = p;
+	shell->cur_is_tty = ctx->is_tty;
+	shell->cur_line = NULL;
+	shell->cur_cmds = NULL;
+	setup_signals_prompt();
 	return (0);
 }
 
@@ -48,18 +57,10 @@ int	prompt(t_shell *shell)
 	char			*line;
 	t_cmd			*cmds;
 
-	ft_bzero(&p, sizeof(t_prompt));
-	ctx.is_tty = isatty(STDIN_FILENO);
-	ctx.saved_stdin = dup(STDIN_FILENO);
-	shell->saved_stdin = ctx.saved_stdin;
-	shell->cur_prompt = &p;
-	shell->cur_is_tty = ctx.is_tty;
-	shell->cur_line = NULL;
-	shell->cur_cmds = NULL;
-	/* Line added underneath */
-	setup_signals_prompt();
+	if (prompt_init(shell, &p, &ctx))
+		return (1);
 	if (build_prompt1(shell, &p, ctx.is_tty) == 0)
-		return (0);
+		return (prompt_exit(&p, ctx.is_tty, ctx.saved_stdin, 0));
 	line = get_prompt_line(&p, ctx.is_tty);
 	if (!line)
 	{
